@@ -34,382 +34,225 @@ export default class SDK {
   }
 
   /**
-   * sheet's methods
+   * room's methods
    */
-  sheet = {
+  room = {
     /**
-     * List sheets
+     * List rooms
      *
-     * @param {ListSheetsRequest} req listSheets request
-     * @returns {Promise<ListSheetsResponse>} A paged array of sheets
+     * @param {ListRoomsRequest} req listRooms request
+     * @returns {Promise<ListRoomsResponse>} A paged array of rooms
      */
-    listSheets: req => {
+    listRooms: req => {
       const { query } = req || {};
 
-      return fetch(`${this.base}/sheets`, {
+      return fetch(`${this.base}/rooms`, {
         method: "GET",
         query,
         headers: { Authorization: this.auth },
       });
     },
     /**
-     * Create a sheet
+     * Create a room
      *
-     * @param {CreateSheetRequest} req createSheet request
-     * @returns {Promise<CreateSheetResponse>} The sheet created
+     * @param {CreateRoomRequest} req createRoom request
+     * @returns {Promise<CreateRoomResponse>} The room created
      */
-    createSheet: req => {
+    createRoom: req => {
       const { body } = req || {};
 
-      if (!body) throw new Error("requetBody is required for createSheet");
+      if (!body) throw new Error("requetBody is required for createRoom");
 
-      return fetch(`${this.base}/sheets`, {
+      return fetch(`${this.base}/rooms`, {
         method: "POST",
         body,
         headers: { Authorization: this.auth },
       });
     },
     /**
-     * Find sheet by id
+     * Find room by id
      *
-     * @param {GetSheetRequest} req getSheet request
-     * @returns {Promise<GetSheetResponse>} Expected response to a valid request
+     * @param {GetRoomRequest} req getRoom request
+     * @returns {Promise<GetRoomResponse>} Expected response to a valid request
      */
-    getSheet: req => {
-      const { sheetId } = req || {};
+    getRoom: req => {
+      const { roomId } = req || {};
 
-      if (!sheetId) throw new Error("sheetId is required for getSheet");
+      if (!roomId) throw new Error("roomId is required for getRoom");
 
-      return fetch(`${this.base}/sheets/${sheetId}`, {
+      return fetch(`${this.base}/rooms/${roomId}`, {
         method: "GET",
         headers: { Authorization: this.auth },
       });
     },
     /**
-     * Update sheet
+     * Update room by id
      *
-     * @param {UpdateSheetRequest} req updateSheet request
-     * @returns {Promise<UpdateSheetResponse>} The sheet
+     * @param {UpdateRoomRequest} req updateRoom request
+     * @returns {Promise<UpdateRoomResponse>} The room
      */
-    updateSheet: req => {
-      const { sheetId, body } = req || {};
+    updateRoom: req => {
+      const { roomId, body } = req || {};
 
-      if (!sheetId) throw new Error("sheetId is required for updateSheet");
-      if (!body) throw new Error("requetBody is required for updateSheet");
+      if (!roomId) throw new Error("roomId is required for updateRoom");
+      if (!body) throw new Error("requetBody is required for updateRoom");
 
-      return fetch(`${this.base}/sheets/${sheetId}`, {
+      return fetch(`${this.base}/rooms/${roomId}`, {
         method: "PUT",
         body,
         headers: { Authorization: this.auth },
       });
     },
     /**
-     * Delete sheet
+     * Delete room
      *
-     * @param {DeleteSheetRequest} req deleteSheet request
+     * @param {DeleteRoomRequest} req deleteRoom request
      */
-    deleteSheet: req => {
-      const { sheetId } = req || {};
+    deleteRoom: req => {
+      const { roomId } = req || {};
 
-      if (!sheetId) throw new Error("sheetId is required for deleteSheet");
+      if (!roomId) throw new Error("roomId is required for deleteRoom");
 
-      return fetch(`${this.base}/sheets/${sheetId}`, {
-        method: "DELETE",
-        headers: { Authorization: this.auth },
-      });
-    },
-    /**
-     * List paperworks
-     *
-     * @param {ListPaperworksRequest} req listPaperworks request
-     * @returns {Promise<ListPaperworksResponse>} A paged array of sheets
-     */
-    listPaperworks: req => {
-      const { sheetId, query } = req || {};
-
-      if (!sheetId) throw new Error("sheetId is required for listPaperworks");
-
-      return fetch(`${this.base}/sheets/${sheetId}/paperworks`, {
-        method: "GET",
-        query,
-        headers: { Authorization: this.auth },
-      });
-    },
-    /**
-     * Add paperwork for sheet
-     *
-     * @param {AddPaperworkRequest} req addPaperwork request
-     * @returns {Promise<AddPaperworkResponse>} The paperwork
-     */
-    addPaperwork: req => {
-      const { sheetId, body } = req || {};
-
-      if (!sheetId) throw new Error("sheetId is required for addPaperwork");
-      if (!body) throw new Error("requetBody is required for addPaperwork");
-
-      return fetch(`${this.base}/sheets/${sheetId}/paperworks`, {
-        method: "POST",
-        body,
-        headers: { Authorization: this.auth },
-      });
-    },
-    /**
-     * Find paperwork by id
-     *
-     * @param {GetPaperworkRequest} req getPaperwork request
-     * @returns {Promise<GetPaperworkResponse>} The paperwork
-     */
-    getPaperwork: req => {
-      const { sheetId, paperworkId } = req || {};
-
-      if (!sheetId) throw new Error("sheetId is required for getPaperwork");
-      if (!paperworkId)
-        throw new Error("paperworkId is required for getPaperwork");
-
-      return fetch(`${this.base}/sheets/${sheetId}/paperworks/${paperworkId}`, {
-        method: "GET",
-        headers: { Authorization: this.auth },
-      });
-    },
-    /**
-     * Remove a paperwork
-     *
-     * @param {RemovePaperworkRequest} req removePaperwork request
-     */
-    removePaperwork: req => {
-      const { sheetId, paperworkId } = req || {};
-
-      if (!sheetId) throw new Error("sheetId is required for removePaperwork");
-      if (!paperworkId)
-        throw new Error("paperworkId is required for removePaperwork");
-
-      return fetch(`${this.base}/sheets/${sheetId}/paperworks/${paperworkId}`, {
+      return fetch(`${this.base}/rooms/${roomId}`, {
         method: "DELETE",
         headers: { Authorization: this.auth },
       });
     },
   };
   /**
-   * category's methods
+   * meeting's methods
    */
-  category = {
+  meeting = {
     /**
-     * List categories
+     * List meetings
      *
-     * @param {ListCategoriesRequest} req listCategories request
-     * @returns {Promise<ListCategoriesResponse>} A paged array of categories
+     * @param {ListMeetingsRequest} req listMeetings request
+     * @returns {Promise<ListMeetingsResponse>} A paged array of meetings
      */
-    listCategories: req => {
+    listMeetings: req => {
       const { query } = req || {};
 
-      return fetch(`${this.base}/categories`, {
+      return fetch(`${this.base}/meetings`, {
         method: "GET",
         query,
         headers: { Authorization: this.auth },
       });
     },
     /**
-     * Create a category
+     * Create a meeting
      *
-     * @param {CreateCategoryRequest} req createCategory request
-     * @returns {Promise<CreateCategoryResponse>} The category created
+     * @param {CreateMeetingRequest} req createMeeting request
+     * @returns {Promise<CreateMeetingResponse>} The meeting created
      */
-    createCategory: req => {
+    createMeeting: req => {
       const { body } = req || {};
 
-      if (!body) throw new Error("requetBody is required for createCategory");
+      if (!body) throw new Error("requetBody is required for createMeeting");
 
-      return fetch(`${this.base}/categories`, {
+      return fetch(`${this.base}/meetings`, {
         method: "POST",
         body,
         headers: { Authorization: this.auth },
       });
     },
     /**
-     * Find category by id
+     * Find meeting by id
      *
-     * @param {GetCategoryRequest} req getCategory request
-     * @returns {Promise<GetCategoryResponse>} Expected response to a valid request
+     * @param {GetMeetingRequest} req getMeeting request
+     * @returns {Promise<GetMeetingResponse>} The meeting
      */
-    getCategory: req => {
-      const { categoryId } = req || {};
+    getMeeting: req => {
+      const { meetingId } = req || {};
 
-      if (!categoryId)
-        throw new Error("categoryId is required for getCategory");
+      if (!meetingId) throw new Error("meetingId is required for getMeeting");
 
-      return fetch(`${this.base}/categories/${categoryId}`, {
+      return fetch(`${this.base}/meetings/${meetingId}`, {
         method: "GET",
         headers: { Authorization: this.auth },
       });
     },
     /**
-     * Update category
+     * Update meeting by id
      *
-     * @param {UpdateCategoryRequest} req updateCategory request
-     * @returns {Promise<UpdateCategoryResponse>} The category
+     * @param {UpdateMeetingRequest} req updateMeeting request
+     * @returns {Promise<UpdateMeetingResponse>} Updated meeting
      */
-    updateCategory: req => {
-      const { categoryId, body } = req || {};
+    updateMeeting: req => {
+      const { meetingId, body } = req || {};
 
-      if (!categoryId)
-        throw new Error("categoryId is required for updateCategory");
-      if (!body) throw new Error("requetBody is required for updateCategory");
+      if (!meetingId)
+        throw new Error("meetingId is required for updateMeeting");
+      if (!body) throw new Error("requetBody is required for updateMeeting");
 
-      return fetch(`${this.base}/categories/${categoryId}`, {
+      return fetch(`${this.base}/meetings/${meetingId}`, {
         method: "PUT",
         body,
         headers: { Authorization: this.auth },
       });
     },
     /**
-     * Delete category
+     * Delete meeting
      *
-     * @param {DeleteCategoryRequest} req deleteCategory request
+     * @param {DeleteMeetingRequest} req deleteMeeting request
      */
-    deleteCategory: req => {
-      const { categoryId } = req || {};
+    deleteMeeting: req => {
+      const { meetingId } = req || {};
 
-      if (!categoryId)
-        throw new Error("categoryId is required for deleteCategory");
+      if (!meetingId)
+        throw new Error("meetingId is required for deleteMeeting");
 
-      return fetch(`${this.base}/categories/${categoryId}`, {
+      return fetch(`${this.base}/meetings/${meetingId}`, {
         method: "DELETE",
         headers: { Authorization: this.auth },
       });
     },
-  };
-  /**
-   * field's methods
-   */
-  field = {
     /**
-     * List public fields
+     * Close a meeting
      *
-     * @param {ListFieldsRequest} req listFields request
-     * @returns {Promise<ListFieldsResponse>} A paged array of fields
+     * @param {CloseMeetingRequest} req closeMeeting request
+     * @returns {Promise<CloseMeetingResponse>} The meeting
      */
-    listFields: req => {
-      const { query } = req || {};
+    closeMeeting: req => {
+      const { meetingId } = req || {};
 
-      return fetch(`${this.base}/fields`, {
-        method: "GET",
-        query,
+      if (!meetingId) throw new Error("meetingId is required for closeMeeting");
+
+      return fetch(`${this.base}/meetings/${meetingId}/!close`, {
+        method: "POST",
         headers: { Authorization: this.auth },
       });
     },
     /**
-     * Create a field
+     * Add a member to a meeting
      *
-     * @param {CreateFieldRequest} req createField request
-     * @returns {Promise<CreateFieldResponse>} The field created
+     * @param {AddMemberRequest} req addMember request
+     * @returns {Promise<AddMemberResponse>} The member
      */
-    createField: req => {
-      const { body } = req || {};
+    addMember: req => {
+      const { meetingId, body } = req || {};
 
-      if (!body) throw new Error("requetBody is required for createField");
+      if (!meetingId) throw new Error("meetingId is required for addMember");
+      if (!body) throw new Error("requetBody is required for addMember");
 
-      return fetch(`${this.base}/fields`, {
+      return fetch(`${this.base}/meetings/${meetingId}/members`, {
         method: "POST",
         body,
         headers: { Authorization: this.auth },
       });
     },
     /**
-     * Find field by id
+     * Remove a member
      *
-     * @param {GetFieldRequest} req getField request
-     * @returns {Promise<GetFieldResponse>} Expected response to a valid request
+     * @param {RemoveMemberRequest} req removeMember request
      */
-    getField: req => {
-      const { fieldId } = req || {};
+    removeMember: req => {
+      const { meetingId, memberId } = req || {};
 
-      if (!fieldId) throw new Error("fieldId is required for getField");
+      if (!meetingId) throw new Error("meetingId is required for removeMember");
+      if (!memberId) throw new Error("memberId is required for removeMember");
 
-      return fetch(`${this.base}/fields/${fieldId}`, {
-        method: "GET",
-        headers: { Authorization: this.auth },
-      });
-    },
-    /**
-     * Update field
-     *
-     * @param {UpdateFieldRequest} req updateField request
-     * @returns {Promise<UpdateFieldResponse>} The field
-     */
-    updateField: req => {
-      const { fieldId, body } = req || {};
-
-      if (!fieldId) throw new Error("fieldId is required for updateField");
-      if (!body) throw new Error("requetBody is required for updateField");
-
-      return fetch(`${this.base}/fields/${fieldId}`, {
-        method: "PUT",
-        body,
-        headers: { Authorization: this.auth },
-      });
-    },
-    /**
-     * Delete field
-     *
-     * @param {DeleteFieldRequest} req deleteField request
-     */
-    deleteField: req => {
-      const { fieldId } = req || {};
-
-      if (!fieldId) throw new Error("fieldId is required for deleteField");
-
-      return fetch(`${this.base}/fields/${fieldId}`, {
+      return fetch(`${this.base}/meetings/${meetingId}/members/${memberId}`, {
         method: "DELETE",
-        headers: { Authorization: this.auth },
-      });
-    },
-  };
-  /**
-   * counts's methods
-   */
-  counts = {
-    /**
-     * CountAnswers
-     *
-     * @param {GetCountOfAnswersRequest} req getCountOfAnswers request
-     * @returns {Promise<GetCountOfAnswersResponse>} Expected response to a valid request
-     */
-    getCountOfAnswers: req => {
-      const { query } = req || {};
-
-      return fetch(`${this.base}/counts/answers`, {
-        method: "GET",
-        query,
-        headers: { Authorization: this.auth },
-      });
-    },
-    /**
-     * CountSheets
-     *
-     * @param {GetCountOfSheetsRequest} req getCountOfSheets request
-     * @returns {Promise<GetCountOfSheetsResponse>} Expected response to a valid request
-     */
-    getCountOfSheets: req => {
-      const { query } = req || {};
-
-      return fetch(`${this.base}/counts/sheets`, {
-        method: "GET",
-        query,
-        headers: { Authorization: this.auth },
-      });
-    },
-    /**
-     * CountPaperworks
-     *
-     * @param {GetCountOfPaperworksRequest} req getCountOfPaperworks request
-     * @returns {Promise<GetCountOfPaperworksResponse>} Expected response to a valid request
-     */
-    getCountOfPaperworks: req => {
-      const { query } = req || {};
-
-      return fetch(`${this.base}/counts/paperworks`, {
-        method: "GET",
-        query,
         headers: { Authorization: this.auth },
       });
     },

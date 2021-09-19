@@ -5,10 +5,8 @@ declare class SDK {
   token: string | (() => string);
   auth: string;
 
-  sheet: SheetAPI;
-  category: CategoryAPI;
-  field: FieldAPI;
-  counts: CountsAPI;
+  room: RoomAPI;
+  meeting: MeetingAPI;
 }
 
 export interface Options {
@@ -16,202 +14,101 @@ export interface Options {
   token?: string | (() => string);
 }
 
-export interface SheetAPI {
+export interface RoomAPI {
   /**
-   * List sheets
+   * List rooms
    */
-  listSheets(req: ListSheetsRequest): Promise<ListSheetsResponse>;
+  listRooms(req: ListRoomsRequest): Promise<ListRoomsResponse>;
   /**
-   * Create a sheet
+   * Create a room
    */
-  createSheet(req: CreateSheetRequest): Promise<CreateSheetResponse>;
+  createRoom(req: CreateRoomRequest): Promise<CreateRoomResponse>;
   /**
-   * Find sheet by id
+   * Find room by id
    */
-  getSheet(req: GetSheetRequest): Promise<GetSheetResponse>;
+  getRoom(req: GetRoomRequest): Promise<GetRoomResponse>;
   /**
-   * Update sheet
+   * Update room by id
    */
-  updateSheet(req: UpdateSheetRequest): Promise<UpdateSheetResponse>;
+  updateRoom(req: UpdateRoomRequest): Promise<UpdateRoomResponse>;
   /**
-   * Delete sheet
+   * Delete room
    */
-  deleteSheet(req: DeleteSheetRequest): Promise<void>;
-  /**
-   * List paperworks
-   */
-  listPaperworks(req: ListPaperworksRequest): Promise<ListPaperworksResponse>;
-  /**
-   * Add paperwork for sheet
-   */
-  addPaperwork(req: AddPaperworkRequest): Promise<AddPaperworkResponse>;
-  /**
-   * Find paperwork by id
-   */
-  getPaperwork(req: GetPaperworkRequest): Promise<GetPaperworkResponse>;
-  /**
-   * Remove a paperwork
-   */
-  removePaperwork(req: RemovePaperworkRequest): Promise<void>;
+  deleteRoom(req: DeleteRoomRequest): Promise<void>;
 }
-export interface CategoryAPI {
+export interface MeetingAPI {
   /**
-   * List categories
+   * List meetings
    */
-  listCategories(req: ListCategoriesRequest): Promise<ListCategoriesResponse>;
+  listMeetings(req: ListMeetingsRequest): Promise<ListMeetingsResponse>;
   /**
-   * Create a category
+   * Create a meeting
    */
-  createCategory(req: CreateCategoryRequest): Promise<CreateCategoryResponse>;
+  createMeeting(req: CreateMeetingRequest): Promise<CreateMeetingResponse>;
   /**
-   * Find category by id
+   * Find meeting by id
    */
-  getCategory(req: GetCategoryRequest): Promise<GetCategoryResponse>;
+  getMeeting(req: GetMeetingRequest): Promise<GetMeetingResponse>;
   /**
-   * Update category
+   * Update meeting by id
    */
-  updateCategory(req: UpdateCategoryRequest): Promise<UpdateCategoryResponse>;
+  updateMeeting(req: UpdateMeetingRequest): Promise<UpdateMeetingResponse>;
   /**
-   * Delete category
+   * Delete meeting
    */
-  deleteCategory(req: DeleteCategoryRequest): Promise<void>;
-}
-export interface FieldAPI {
+  deleteMeeting(req: DeleteMeetingRequest): Promise<void>;
   /**
-   * List public fields
+   * Close a meeting
    */
-  listFields(req: ListFieldsRequest): Promise<ListFieldsResponse>;
+  closeMeeting(req: CloseMeetingRequest): Promise<CloseMeetingResponse>;
   /**
-   * Create a field
+   * Add a member to a meeting
    */
-  createField(req: CreateFieldRequest): Promise<CreateFieldResponse>;
+  addMember(req: AddMemberRequest): Promise<AddMemberResponse>;
   /**
-   * Find field by id
+   * Remove a member
    */
-  getField(req: GetFieldRequest): Promise<GetFieldResponse>;
-  /**
-   * Update field
-   */
-  updateField(req: UpdateFieldRequest): Promise<UpdateFieldResponse>;
-  /**
-   * Delete field
-   */
-  deleteField(req: DeleteFieldRequest): Promise<void>;
-}
-export interface CountsAPI {
-  /**
-   * CountAnswers
-   */
-  getCountOfAnswers(req: GetCountOfAnswersRequest): Promise<GetCountOfAnswersResponse>;
-  /**
-   * CountSheets
-   */
-  getCountOfSheets(req: GetCountOfSheetsRequest): Promise<GetCountOfSheetsResponse>;
-  /**
-   * CountPaperworks
-   */
-  getCountOfPaperworks(req: GetCountOfPaperworksRequest): Promise<GetCountOfPaperworksResponse>;
+  removeMember(req: RemoveMemberRequest): Promise<void>;
 }
 
-export interface ListSheetsRequest {
+export interface ListRoomsRequest {
   query?: {
     _limit?: number;
     _offset?: number;
     _sort?: string;
     _select?: string[];
-    createAt_lt?: string;
-    createAt_gt?: string;
-    isTemplate?: boolean;
-    labels?: string[];
-    name_like?: string;
-    ns?: string[];
-    "refs.oid"?: string;
-    "refs.source"?: string;
-    "refs.type"?: string;
-    "refs.uri"?: string;
-    state?: "OPEN" | "CLOSED";
   };
 }
-export interface ListSheetsResponse {
+export interface ListRoomsResponse {
   body: ({
-    /**
-     * 关闭时间
-     */
-    closeAt?: Date;
-    /**
-     * 最后增加答卷的时间
-     */
-    addPaperworkAt?: Date;
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 行业
-     */
-    industry?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
     /**
      * 标签
      */
     labels?: string[];
     /**
-     * logo
-     */
-    logo?: string;
-    /**
-     * 名称
+     * 房间名称
      */
     name?: string;
     /**
-     * 所属命名空间
+     * 房间号
      */
-    ns?: string;
+    no?: string;
     /**
-     * 拥有者
+     * 房间状态
      */
-    owner?: string;
-    refs?: {
-      /**
-       * 资源在第三方的 origin id
-       */
-      oid: string;
-      /**
-       * 来源
-       */
-      source: string;
-      /**
-       * 名称
-       */
-      name?: string;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 类型
-       */
-      type?: string;
-      /**
-       * 唯一地址
-       */
-      uri?: string;
-    }[];
+    state?: "OCCUPIED" | "FREE";
     /**
-     * 别名
+     * 房间类型
      */
-    slug?: string;
+    type?: string;
     /**
-     * 状态
+     * 摄像头直播流
      */
-    state?: "OPEN" | "CLOSED";
+    liveStreamings?: string[];
     /**
-     * 文档摘要，可以用于简介或者目录说明等
+     * 心电监护仪 id
      */
-    summary?: string;
+    ecgMonitor?: string;
   } & {
     /**
      * mongodb id
@@ -221,323 +118,79 @@ export interface ListSheetsResponse {
     updateBy?: string;
     createAt?: Date;
     createBy?: string;
-  } & {
-    /**
-     * 字段
-     */
-    fields: ({
-      /**
-       * 表单字段的默认值
-       */
-      defaultValue?: {
-        [k: string]: any;
-      };
-      /**
-       * 字段描述
-       */
-      description?: string;
-      /**
-       * 是否是模板
-       */
-      isTemplate?: boolean;
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title?: string;
-      /**
-       * 字段的占位字符
-       */
-      placeholder?: string;
-      /**
-       * 是否是必须的字段
-       */
-      required?: boolean;
-      /**
-       * 字段校验规则
-       */
-      rules?: {}[];
-      /**
-       * 字段类型
-       */
-      type?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段所属分类数组，最顶层在第一个元素
-       */
-      categories: ({
-        /**
-         * 描述
-         */
-        description?: string;
-        /**
-         * 标题
-         */
-        title?: string;
-        /**
-         * 父类别
-         */
-        parent?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 标题
-         */
-        title: string;
-      })[];
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 是否是必须的字段
-       */
-      required: boolean;
-      /**
-       * 字段类型
-       */
-      type: string;
-    })[];
-    /**
-     * 标签
-     */
-    labels: string[];
-    /**
-     * 名称
-     */
-    name: string;
-    refs: {
-      /**
-       * 资源在第三方的 origin id
-       */
-      oid: string;
-      /**
-       * 来源
-       */
-      source: string;
-      /**
-       * 名称
-       */
-      name?: string;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 类型
-       */
-      type?: string;
-      /**
-       * 唯一地址
-       */
-      uri?: string;
-    }[];
-    /**
-     * 状态
-     */
-    state: "OPEN" | "CLOSED";
-    /**
-     * 拥有者
-     */
-    owner: string;
   })[];
   headers: {
     "x-total-count"?: number;
   };
 }
-export interface CreateSheetRequest {
+export interface CreateRoomRequest {
   /**
-   * 表单创建文档
+   * Room 创建文档
    */
   body: {
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 行业
-     */
-    industry?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
     /**
      * 标签
      */
     labels?: string[];
     /**
-     * logo
-     */
-    logo?: string;
-    /**
-     * 名称
+     * 房间名称
      */
     name?: string;
     /**
-     * 所属命名空间
+     * 房间号
      */
-    ns?: string;
+    no?: string;
     /**
-     * 拥有者
+     * 房间状态
      */
-    owner?: string;
-    refs?: {
-      /**
-       * 资源在第三方的 origin id
-       */
-      oid: string;
-      /**
-       * 来源
-       */
-      source: string;
-      /**
-       * 名称
-       */
-      name?: string;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 类型
-       */
-      type?: string;
-      /**
-       * 唯一地址
-       */
-      uri?: string;
-    }[];
+    state?: "OCCUPIED" | "FREE";
     /**
-     * 别名
+     * 房间类型
      */
-    slug?: string;
+    type?: string;
     /**
-     * 状态
+     * 摄像头直播流
      */
-    state?: "OPEN" | "CLOSED";
+    liveStreamings?: string[];
     /**
-     * 文档摘要，可以用于简介或者目录说明等
+     * 心电监护仪 id
      */
-    summary?: string;
-  } & {
-    /**
-     * 字段
-     */
-    fields: string[];
-    /**
-     * 名称
-     */
-    name: string;
-    /**
-     * 拥有者
-     */
-    owner: string;
+    ecgMonitor?: string;
   };
 }
-export interface CreateSheetResponse {
+export interface CreateRoomResponse {
   /**
-   * 表单
+   * Rfid device
    */
   body: {
-    /**
-     * 关闭时间
-     */
-    closeAt?: Date;
-    /**
-     * 最后增加答卷的时间
-     */
-    addPaperworkAt?: Date;
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 行业
-     */
-    industry?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
     /**
      * 标签
      */
     labels?: string[];
     /**
-     * logo
-     */
-    logo?: string;
-    /**
-     * 名称
+     * 房间名称
      */
     name?: string;
     /**
-     * 所属命名空间
+     * 房间号
      */
-    ns?: string;
+    no?: string;
     /**
-     * 拥有者
+     * 房间状态
      */
-    owner?: string;
-    refs?: {
-      /**
-       * 资源在第三方的 origin id
-       */
-      oid: string;
-      /**
-       * 来源
-       */
-      source: string;
-      /**
-       * 名称
-       */
-      name?: string;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 类型
-       */
-      type?: string;
-      /**
-       * 唯一地址
-       */
-      uri?: string;
-    }[];
+    state?: "OCCUPIED" | "FREE";
     /**
-     * 别名
+     * 房间类型
      */
-    slug?: string;
+    type?: string;
     /**
-     * 状态
+     * 摄像头直播流
      */
-    state?: "OPEN" | "CLOSED";
+    liveStreamings?: string[];
     /**
-     * 文档摘要，可以用于简介或者目录说明等
+     * 心电监护仪 id
      */
-    summary?: string;
+    ecgMonitor?: string;
   } & {
     /**
      * mongodb id
@@ -547,233 +200,44 @@ export interface CreateSheetResponse {
     updateBy?: string;
     createAt?: Date;
     createBy?: string;
-  } & {
-    /**
-     * 字段
-     */
-    fields: ({
-      /**
-       * 表单字段的默认值
-       */
-      defaultValue?: {
-        [k: string]: any;
-      };
-      /**
-       * 字段描述
-       */
-      description?: string;
-      /**
-       * 是否是模板
-       */
-      isTemplate?: boolean;
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title?: string;
-      /**
-       * 字段的占位字符
-       */
-      placeholder?: string;
-      /**
-       * 是否是必须的字段
-       */
-      required?: boolean;
-      /**
-       * 字段校验规则
-       */
-      rules?: {}[];
-      /**
-       * 字段类型
-       */
-      type?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段所属分类数组，最顶层在第一个元素
-       */
-      categories: ({
-        /**
-         * 描述
-         */
-        description?: string;
-        /**
-         * 标题
-         */
-        title?: string;
-        /**
-         * 父类别
-         */
-        parent?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 标题
-         */
-        title: string;
-      })[];
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 是否是必须的字段
-       */
-      required: boolean;
-      /**
-       * 字段类型
-       */
-      type: string;
-    })[];
-    /**
-     * 标签
-     */
-    labels: string[];
-    /**
-     * 名称
-     */
-    name: string;
-    refs: {
-      /**
-       * 资源在第三方的 origin id
-       */
-      oid: string;
-      /**
-       * 来源
-       */
-      source: string;
-      /**
-       * 名称
-       */
-      name?: string;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 类型
-       */
-      type?: string;
-      /**
-       * 唯一地址
-       */
-      uri?: string;
-    }[];
-    /**
-     * 状态
-     */
-    state: "OPEN" | "CLOSED";
-    /**
-     * 拥有者
-     */
-    owner: string;
   };
 }
-export interface GetSheetRequest {
-  sheetId: string;
+export interface GetRoomRequest {
+  roomId: string;
 }
-export interface GetSheetResponse {
+export interface GetRoomResponse {
   /**
-   * 表单
+   * Rfid device
    */
   body: {
-    /**
-     * 关闭时间
-     */
-    closeAt?: Date;
-    /**
-     * 最后增加答卷的时间
-     */
-    addPaperworkAt?: Date;
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 行业
-     */
-    industry?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
     /**
      * 标签
      */
     labels?: string[];
     /**
-     * logo
-     */
-    logo?: string;
-    /**
-     * 名称
+     * 房间名称
      */
     name?: string;
     /**
-     * 所属命名空间
+     * 房间号
      */
-    ns?: string;
+    no?: string;
     /**
-     * 拥有者
+     * 房间状态
      */
-    owner?: string;
-    refs?: {
-      /**
-       * 资源在第三方的 origin id
-       */
-      oid: string;
-      /**
-       * 来源
-       */
-      source: string;
-      /**
-       * 名称
-       */
-      name?: string;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 类型
-       */
-      type?: string;
-      /**
-       * 唯一地址
-       */
-      uri?: string;
-    }[];
+    state?: "OCCUPIED" | "FREE";
     /**
-     * 别名
+     * 房间类型
      */
-    slug?: string;
+    type?: string;
     /**
-     * 状态
+     * 摄像头直播流
      */
-    state?: "OPEN" | "CLOSED";
+    liveStreamings?: string[];
     /**
-     * 文档摘要，可以用于简介或者目录说明等
+     * 心电监护仪 id
      */
-    summary?: string;
+    ecgMonitor?: string;
   } & {
     /**
      * mongodb id
@@ -783,313 +247,77 @@ export interface GetSheetResponse {
     updateBy?: string;
     createAt?: Date;
     createBy?: string;
-  } & {
-    /**
-     * 字段
-     */
-    fields: ({
-      /**
-       * 表单字段的默认值
-       */
-      defaultValue?: {
-        [k: string]: any;
-      };
-      /**
-       * 字段描述
-       */
-      description?: string;
-      /**
-       * 是否是模板
-       */
-      isTemplate?: boolean;
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title?: string;
-      /**
-       * 字段的占位字符
-       */
-      placeholder?: string;
-      /**
-       * 是否是必须的字段
-       */
-      required?: boolean;
-      /**
-       * 字段校验规则
-       */
-      rules?: {}[];
-      /**
-       * 字段类型
-       */
-      type?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段所属分类数组，最顶层在第一个元素
-       */
-      categories: ({
-        /**
-         * 描述
-         */
-        description?: string;
-        /**
-         * 标题
-         */
-        title?: string;
-        /**
-         * 父类别
-         */
-        parent?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 标题
-         */
-        title: string;
-      })[];
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 是否是必须的字段
-       */
-      required: boolean;
-      /**
-       * 字段类型
-       */
-      type: string;
-    })[];
-    /**
-     * 标签
-     */
-    labels: string[];
-    /**
-     * 名称
-     */
-    name: string;
-    refs: {
-      /**
-       * 资源在第三方的 origin id
-       */
-      oid: string;
-      /**
-       * 来源
-       */
-      source: string;
-      /**
-       * 名称
-       */
-      name?: string;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 类型
-       */
-      type?: string;
-      /**
-       * 唯一地址
-       */
-      uri?: string;
-    }[];
-    /**
-     * 状态
-     */
-    state: "OPEN" | "CLOSED";
-    /**
-     * 拥有者
-     */
-    owner: string;
   };
 }
-export interface UpdateSheetRequest {
-  sheetId: string;
+export interface UpdateRoomRequest {
+  roomId: string;
   /**
-   * 表单创建文档
+   * Room doc
    */
   body: {
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 行业
-     */
-    industry?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
     /**
      * 标签
      */
     labels?: string[];
     /**
-     * logo
-     */
-    logo?: string;
-    /**
-     * 名称
+     * 房间名称
      */
     name?: string;
     /**
-     * 所属命名空间
+     * 房间号
      */
-    ns?: string;
+    no?: string;
     /**
-     * 拥有者
+     * 房间状态
      */
-    owner?: string;
-    refs?: {
-      /**
-       * 资源在第三方的 origin id
-       */
-      oid: string;
-      /**
-       * 来源
-       */
-      source: string;
-      /**
-       * 名称
-       */
-      name?: string;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 类型
-       */
-      type?: string;
-      /**
-       * 唯一地址
-       */
-      uri?: string;
-    }[];
+    state?: "OCCUPIED" | "FREE";
     /**
-     * 别名
+     * 房间类型
      */
-    slug?: string;
+    type?: string;
     /**
-     * 状态
+     * 摄像头直播流
      */
-    state?: "OPEN" | "CLOSED";
+    liveStreamings?: string[];
     /**
-     * 文档摘要，可以用于简介或者目录说明等
+     * 心电监护仪 id
      */
-    summary?: string;
-  } & {
-    /**
-     * 字段
-     */
-    fields?: string[];
+    ecgMonitor?: string;
   };
 }
-export interface UpdateSheetResponse {
+export interface UpdateRoomResponse {
   /**
-   * 表单
+   * Rfid device
    */
   body: {
-    /**
-     * 关闭时间
-     */
-    closeAt?: Date;
-    /**
-     * 最后增加答卷的时间
-     */
-    addPaperworkAt?: Date;
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 行业
-     */
-    industry?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
     /**
      * 标签
      */
     labels?: string[];
     /**
-     * logo
-     */
-    logo?: string;
-    /**
-     * 名称
+     * 房间名称
      */
     name?: string;
     /**
-     * 所属命名空间
+     * 房间号
      */
-    ns?: string;
+    no?: string;
     /**
-     * 拥有者
+     * 房间状态
      */
-    owner?: string;
-    refs?: {
-      /**
-       * 资源在第三方的 origin id
-       */
-      oid: string;
-      /**
-       * 来源
-       */
-      source: string;
-      /**
-       * 名称
-       */
-      name?: string;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 类型
-       */
-      type?: string;
-      /**
-       * 唯一地址
-       */
-      uri?: string;
-    }[];
+    state?: "OCCUPIED" | "FREE";
     /**
-     * 别名
+     * 房间类型
      */
-    slug?: string;
+    type?: string;
     /**
-     * 状态
+     * 摄像头直播流
      */
-    state?: "OPEN" | "CLOSED";
+    liveStreamings?: string[];
     /**
-     * 文档摘要，可以用于简介或者目录说明等
+     * 心电监护仪 id
      */
-    summary?: string;
+    ecgMonitor?: string;
   } & {
     /**
      * mongodb id
@@ -1099,1484 +327,41 @@ export interface UpdateSheetResponse {
     updateBy?: string;
     createAt?: Date;
     createBy?: string;
-  } & {
-    /**
-     * 字段
-     */
-    fields: ({
-      /**
-       * 表单字段的默认值
-       */
-      defaultValue?: {
-        [k: string]: any;
-      };
-      /**
-       * 字段描述
-       */
-      description?: string;
-      /**
-       * 是否是模板
-       */
-      isTemplate?: boolean;
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title?: string;
-      /**
-       * 字段的占位字符
-       */
-      placeholder?: string;
-      /**
-       * 是否是必须的字段
-       */
-      required?: boolean;
-      /**
-       * 字段校验规则
-       */
-      rules?: {}[];
-      /**
-       * 字段类型
-       */
-      type?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段所属分类数组，最顶层在第一个元素
-       */
-      categories: ({
-        /**
-         * 描述
-         */
-        description?: string;
-        /**
-         * 标题
-         */
-        title?: string;
-        /**
-         * 父类别
-         */
-        parent?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 标题
-         */
-        title: string;
-      })[];
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 是否是必须的字段
-       */
-      required: boolean;
-      /**
-       * 字段类型
-       */
-      type: string;
-    })[];
-    /**
-     * 标签
-     */
-    labels: string[];
-    /**
-     * 名称
-     */
-    name: string;
-    refs: {
-      /**
-       * 资源在第三方的 origin id
-       */
-      oid: string;
-      /**
-       * 来源
-       */
-      source: string;
-      /**
-       * 名称
-       */
-      name?: string;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 类型
-       */
-      type?: string;
-      /**
-       * 唯一地址
-       */
-      uri?: string;
-    }[];
-    /**
-     * 状态
-     */
-    state: "OPEN" | "CLOSED";
-    /**
-     * 拥有者
-     */
-    owner: string;
   };
 }
-export interface DeleteSheetRequest {
-  sheetId: string;
+export interface DeleteRoomRequest {
+  roomId: string;
 }
-export interface ListPaperworksRequest {
-  sheetId: string;
+export interface ListMeetingsRequest {
   query?: {
     _limit?: number;
     _offset?: number;
     _sort?: string;
     _select?: string[];
-    respondents?: string[];
-    inspectors?: string[];
   };
 }
-export interface ListPaperworksResponse {
+export interface ListMeetingsResponse {
   body: ({
     /**
-     * 答案
-     */
-    answers?: ({
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 备注
-       */
-      remark?: string;
-      /**
-       * 值
-       */
-      value: {
-        [k: string]: any;
-      };
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段
-       */
-      field: {
-        /**
-         * 表单字段的默认值
-         */
-        defaultValue?: {
-          [k: string]: any;
-        };
-        /**
-         * 字段描述
-         */
-        description?: string;
-        /**
-         * 是否是模板
-         */
-        isTemplate?: boolean;
-        /**
-         * 字段 key
-         */
-        key?: string;
-        /**
-         * 表单字段标题
-         */
-        title?: string;
-        /**
-         * 字段的占位字符
-         */
-        placeholder?: string;
-        /**
-         * 是否是必须的字段
-         */
-        required?: boolean;
-        /**
-         * 字段校验规则
-         */
-        rules?: {}[];
-        /**
-         * 字段类型
-         */
-        type?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 字段所属分类数组，最顶层在第一个元素
-         */
-        categories: ({
-          /**
-           * 描述
-           */
-          description?: string;
-          /**
-           * 标题
-           */
-          title?: string;
-          /**
-           * 父类别
-           */
-          parent?: string;
-        } & {
-          /**
-           * mongodb id
-           */
-          id: string;
-          updateAt?: Date;
-          updateBy?: string;
-          createAt?: Date;
-          createBy?: string;
-        } & {
-          /**
-           * 标题
-           */
-          title: string;
-        })[];
-        /**
-         * 表单字段标题
-         */
-        title: string;
-        /**
-         * 是否是必须的字段
-         */
-        required: boolean;
-        /**
-         * 字段类型
-         */
-        type: string;
-      };
-    })[];
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 调查者，可以能有多人
-     */
-    inspectors?: string[];
-    /**
-     * 所属命名空间
-     */
-    ns?: string;
-    /**
-     * 被调查人
-     */
-    respondent?: string;
-    /**
-     * 得分
-     */
-    score?: number;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 答案
-     */
-    answers: ({
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 备注
-       */
-      remark?: string;
-      /**
-       * 值
-       */
-      value: {
-        [k: string]: any;
-      };
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段
-       */
-      field: {
-        /**
-         * 表单字段的默认值
-         */
-        defaultValue?: {
-          [k: string]: any;
-        };
-        /**
-         * 字段描述
-         */
-        description?: string;
-        /**
-         * 是否是模板
-         */
-        isTemplate?: boolean;
-        /**
-         * 字段 key
-         */
-        key?: string;
-        /**
-         * 表单字段标题
-         */
-        title?: string;
-        /**
-         * 字段的占位字符
-         */
-        placeholder?: string;
-        /**
-         * 是否是必须的字段
-         */
-        required?: boolean;
-        /**
-         * 字段校验规则
-         */
-        rules?: {}[];
-        /**
-         * 字段类型
-         */
-        type?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 字段所属分类数组，最顶层在第一个元素
-         */
-        categories: ({
-          /**
-           * 描述
-           */
-          description?: string;
-          /**
-           * 标题
-           */
-          title?: string;
-          /**
-           * 父类别
-           */
-          parent?: string;
-        } & {
-          /**
-           * mongodb id
-           */
-          id: string;
-          updateAt?: Date;
-          updateBy?: string;
-          createAt?: Date;
-          createBy?: string;
-        } & {
-          /**
-           * 标题
-           */
-          title: string;
-        })[];
-        /**
-         * 表单字段标题
-         */
-        title: string;
-        /**
-         * 是否是必须的字段
-         */
-        required: boolean;
-        /**
-         * 字段类型
-         */
-        type: string;
-      };
-    })[];
-    /**
-     * 调查者，可以能有多人
-     */
-    inspectors: string[];
-  })[];
-  headers: {
-    "x-total-count"?: number;
-  };
-}
-export interface AddPaperworkRequest {
-  sheetId: string;
-  body: {
-    /**
-     * 答案
-     */
-    answers?: ({
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 备注
-       */
-      remark?: string;
-      /**
-       * 值
-       */
-      value: {
-        [k: string]: any;
-      };
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段
-       */
-      field: {
-        /**
-         * 表单字段的默认值
-         */
-        defaultValue?: {
-          [k: string]: any;
-        };
-        /**
-         * 字段描述
-         */
-        description?: string;
-        /**
-         * 是否是模板
-         */
-        isTemplate?: boolean;
-        /**
-         * 字段 key
-         */
-        key?: string;
-        /**
-         * 表单字段标题
-         */
-        title?: string;
-        /**
-         * 字段的占位字符
-         */
-        placeholder?: string;
-        /**
-         * 是否是必须的字段
-         */
-        required?: boolean;
-        /**
-         * 字段校验规则
-         */
-        rules?: {}[];
-        /**
-         * 字段类型
-         */
-        type?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 字段所属分类数组，最顶层在第一个元素
-         */
-        categories: ({
-          /**
-           * 描述
-           */
-          description?: string;
-          /**
-           * 标题
-           */
-          title?: string;
-          /**
-           * 父类别
-           */
-          parent?: string;
-        } & {
-          /**
-           * mongodb id
-           */
-          id: string;
-          updateAt?: Date;
-          updateBy?: string;
-          createAt?: Date;
-          createBy?: string;
-        } & {
-          /**
-           * 标题
-           */
-          title: string;
-        })[];
-        /**
-         * 表单字段标题
-         */
-        title: string;
-        /**
-         * 是否是必须的字段
-         */
-        required: boolean;
-        /**
-         * 字段类型
-         */
-        type: string;
-      };
-    })[];
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 调查者，可以能有多人
-     */
-    inspectors?: string[];
-    /**
-     * 所属命名空间
-     */
-    ns?: string;
-    /**
-     * 被调查人
-     */
-    respondent?: string;
-    /**
-     * 得分
-     */
-    score?: number;
-  } & {
-    /**
-     * 答案
-     */
-    answers: ({
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 备注
-       */
-      remark?: string;
-      /**
-       * 值
-       */
-      value: {
-        [k: string]: any;
-      };
-    } & {
-      /**
-       * field id
-       */
-      field?: string;
-    })[];
-    /**
-     * 调查者，可以能有多人
-     */
-    inspectors: string[];
-  };
-}
-export interface AddPaperworkResponse {
-  body: {
-    /**
-     * 答案
-     */
-    answers?: ({
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 备注
-       */
-      remark?: string;
-      /**
-       * 值
-       */
-      value: {
-        [k: string]: any;
-      };
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段
-       */
-      field: {
-        /**
-         * 表单字段的默认值
-         */
-        defaultValue?: {
-          [k: string]: any;
-        };
-        /**
-         * 字段描述
-         */
-        description?: string;
-        /**
-         * 是否是模板
-         */
-        isTemplate?: boolean;
-        /**
-         * 字段 key
-         */
-        key?: string;
-        /**
-         * 表单字段标题
-         */
-        title?: string;
-        /**
-         * 字段的占位字符
-         */
-        placeholder?: string;
-        /**
-         * 是否是必须的字段
-         */
-        required?: boolean;
-        /**
-         * 字段校验规则
-         */
-        rules?: {}[];
-        /**
-         * 字段类型
-         */
-        type?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 字段所属分类数组，最顶层在第一个元素
-         */
-        categories: ({
-          /**
-           * 描述
-           */
-          description?: string;
-          /**
-           * 标题
-           */
-          title?: string;
-          /**
-           * 父类别
-           */
-          parent?: string;
-        } & {
-          /**
-           * mongodb id
-           */
-          id: string;
-          updateAt?: Date;
-          updateBy?: string;
-          createAt?: Date;
-          createBy?: string;
-        } & {
-          /**
-           * 标题
-           */
-          title: string;
-        })[];
-        /**
-         * 表单字段标题
-         */
-        title: string;
-        /**
-         * 是否是必须的字段
-         */
-        required: boolean;
-        /**
-         * 字段类型
-         */
-        type: string;
-      };
-    })[];
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 调查者，可以能有多人
-     */
-    inspectors?: string[];
-    /**
-     * 所属命名空间
-     */
-    ns?: string;
-    /**
-     * 被调查人
-     */
-    respondent?: string;
-    /**
-     * 得分
-     */
-    score?: number;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 答案
-     */
-    answers: ({
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 备注
-       */
-      remark?: string;
-      /**
-       * 值
-       */
-      value: {
-        [k: string]: any;
-      };
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段
-       */
-      field: {
-        /**
-         * 表单字段的默认值
-         */
-        defaultValue?: {
-          [k: string]: any;
-        };
-        /**
-         * 字段描述
-         */
-        description?: string;
-        /**
-         * 是否是模板
-         */
-        isTemplate?: boolean;
-        /**
-         * 字段 key
-         */
-        key?: string;
-        /**
-         * 表单字段标题
-         */
-        title?: string;
-        /**
-         * 字段的占位字符
-         */
-        placeholder?: string;
-        /**
-         * 是否是必须的字段
-         */
-        required?: boolean;
-        /**
-         * 字段校验规则
-         */
-        rules?: {}[];
-        /**
-         * 字段类型
-         */
-        type?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 字段所属分类数组，最顶层在第一个元素
-         */
-        categories: ({
-          /**
-           * 描述
-           */
-          description?: string;
-          /**
-           * 标题
-           */
-          title?: string;
-          /**
-           * 父类别
-           */
-          parent?: string;
-        } & {
-          /**
-           * mongodb id
-           */
-          id: string;
-          updateAt?: Date;
-          updateBy?: string;
-          createAt?: Date;
-          createBy?: string;
-        } & {
-          /**
-           * 标题
-           */
-          title: string;
-        })[];
-        /**
-         * 表单字段标题
-         */
-        title: string;
-        /**
-         * 是否是必须的字段
-         */
-        required: boolean;
-        /**
-         * 字段类型
-         */
-        type: string;
-      };
-    })[];
-    /**
-     * 调查者，可以能有多人
-     */
-    inspectors: string[];
-  };
-}
-export interface GetPaperworkRequest {
-  sheetId: string;
-  paperworkId: string;
-}
-export interface GetPaperworkResponse {
-  body: {
-    /**
-     * 答案
-     */
-    answers?: ({
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 备注
-       */
-      remark?: string;
-      /**
-       * 值
-       */
-      value: {
-        [k: string]: any;
-      };
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段
-       */
-      field: {
-        /**
-         * 表单字段的默认值
-         */
-        defaultValue?: {
-          [k: string]: any;
-        };
-        /**
-         * 字段描述
-         */
-        description?: string;
-        /**
-         * 是否是模板
-         */
-        isTemplate?: boolean;
-        /**
-         * 字段 key
-         */
-        key?: string;
-        /**
-         * 表单字段标题
-         */
-        title?: string;
-        /**
-         * 字段的占位字符
-         */
-        placeholder?: string;
-        /**
-         * 是否是必须的字段
-         */
-        required?: boolean;
-        /**
-         * 字段校验规则
-         */
-        rules?: {}[];
-        /**
-         * 字段类型
-         */
-        type?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 字段所属分类数组，最顶层在第一个元素
-         */
-        categories: ({
-          /**
-           * 描述
-           */
-          description?: string;
-          /**
-           * 标题
-           */
-          title?: string;
-          /**
-           * 父类别
-           */
-          parent?: string;
-        } & {
-          /**
-           * mongodb id
-           */
-          id: string;
-          updateAt?: Date;
-          updateBy?: string;
-          createAt?: Date;
-          createBy?: string;
-        } & {
-          /**
-           * 标题
-           */
-          title: string;
-        })[];
-        /**
-         * 表单字段标题
-         */
-        title: string;
-        /**
-         * 是否是必须的字段
-         */
-        required: boolean;
-        /**
-         * 字段类型
-         */
-        type: string;
-      };
-    })[];
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 调查者，可以能有多人
-     */
-    inspectors?: string[];
-    /**
-     * 所属命名空间
-     */
-    ns?: string;
-    /**
-     * 被调查人
-     */
-    respondent?: string;
-    /**
-     * 得分
-     */
-    score?: number;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 答案
-     */
-    answers: ({
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 备注
-       */
-      remark?: string;
-      /**
-       * 值
-       */
-      value: {
-        [k: string]: any;
-      };
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段
-       */
-      field: {
-        /**
-         * 表单字段的默认值
-         */
-        defaultValue?: {
-          [k: string]: any;
-        };
-        /**
-         * 字段描述
-         */
-        description?: string;
-        /**
-         * 是否是模板
-         */
-        isTemplate?: boolean;
-        /**
-         * 字段 key
-         */
-        key?: string;
-        /**
-         * 表单字段标题
-         */
-        title?: string;
-        /**
-         * 字段的占位字符
-         */
-        placeholder?: string;
-        /**
-         * 是否是必须的字段
-         */
-        required?: boolean;
-        /**
-         * 字段校验规则
-         */
-        rules?: {}[];
-        /**
-         * 字段类型
-         */
-        type?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 字段所属分类数组，最顶层在第一个元素
-         */
-        categories: ({
-          /**
-           * 描述
-           */
-          description?: string;
-          /**
-           * 标题
-           */
-          title?: string;
-          /**
-           * 父类别
-           */
-          parent?: string;
-        } & {
-          /**
-           * mongodb id
-           */
-          id: string;
-          updateAt?: Date;
-          updateBy?: string;
-          createAt?: Date;
-          createBy?: string;
-        } & {
-          /**
-           * 标题
-           */
-          title: string;
-        })[];
-        /**
-         * 表单字段标题
-         */
-        title: string;
-        /**
-         * 是否是必须的字段
-         */
-        required: boolean;
-        /**
-         * 字段类型
-         */
-        type: string;
-      };
-    })[];
-    /**
-     * 调查者，可以能有多人
-     */
-    inspectors: string[];
-  };
-}
-export interface RemovePaperworkRequest {
-  sheetId: string;
-  paperworkId: string;
-}
-export interface ListCategoriesRequest {
-  query?: {
-    _limit?: number;
-    _offset?: number;
-    _sort?: string;
-    _select?: string[];
-    parent?: string[];
-  };
-}
-export interface ListCategoriesResponse {
-  body: ({
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 标题
+     * 会议标题
      */
     title?: string;
     /**
-     * 父类别
-     */
-    parent?: string;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 标题
-     */
-    title: string;
-  })[];
-  headers: {
-    "x-total-count"?: number;
-  };
-}
-export interface CreateCategoryRequest {
-  body: {
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 标题
-     */
-    title?: string;
-    /**
-     * 父类别
-     */
-    parent?: string;
-  } & {
-    /**
-     * 标题
-     */
-    title: string;
-  };
-}
-export interface CreateCategoryResponse {
-  /**
-   * 类别
-   */
-  body: {
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 标题
-     */
-    title?: string;
-    /**
-     * 父类别
-     */
-    parent?: string;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 标题
-     */
-    title: string;
-  };
-}
-export interface GetCategoryRequest {
-  categoryId: string;
-}
-export interface GetCategoryResponse {
-  /**
-   * 类别
-   */
-  body: {
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 标题
-     */
-    title?: string;
-    /**
-     * 父类别
-     */
-    parent?: string;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 标题
-     */
-    title: string;
-  };
-}
-export interface UpdateCategoryRequest {
-  categoryId: string;
-  /**
-   * 类别 Doc
-   */
-  body: {
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 标题
-     */
-    title?: string;
-    /**
-     * 父类别
-     */
-    parent?: string;
-  };
-}
-export interface UpdateCategoryResponse {
-  /**
-   * 类别
-   */
-  body: {
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 标题
-     */
-    title?: string;
-    /**
-     * 父类别
-     */
-    parent?: string;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 标题
-     */
-    title: string;
-  };
-}
-export interface DeleteCategoryRequest {
-  categoryId: string;
-}
-export interface ListFieldsRequest {
-  query?: {
-    _limit?: number;
-    _offset?: number;
-    _sort?: string;
-    _select?: string[];
-    categories?: string[];
-  };
-}
-export interface ListFieldsResponse {
-  body: ({
-    /**
-     * 表单字段的默认值
-     */
-    defaultValue?: {
-      [k: string]: any;
-    };
-    /**
-     * 字段描述
-     */
-    description?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
-    /**
-     * 字段 key
-     */
-    key?: string;
-    /**
-     * 表单字段标题
-     */
-    title?: string;
-    /**
-     * 字段的占位字符
-     */
-    placeholder?: string;
-    /**
-     * 是否是必须的字段
-     */
-    required?: boolean;
-    /**
-     * 字段校验规则
-     */
-    rules?: {}[];
-    /**
-     * 字段类型
+     * 会议类型
      */
     type?: string;
+    /**
+     * 标签
+     */
+    labels?: string[];
+    /**
+     * 会议状态
+     */
+    state?: "OPEN" | "CLOSED";
+    /**
+     * 图标
+     */
+    thumbnail?: string;
   } & {
     /**
      * mongodb id
@@ -2588,21 +373,29 @@ export interface ListFieldsResponse {
     createBy?: string;
   } & {
     /**
-     * 字段所属分类数组，最顶层在第一个元素
+     * 成员
      */
-    categories: ({
+    members: ({
       /**
-       * 描述
+       * 头像
        */
-      description?: string;
+      avatar?: string;
       /**
-       * 标题
+       * 名称
        */
-      title?: string;
+      name?: string;
       /**
-       * 父类别
+       * 角色
        */
-      parent?: string;
+      roles?: ("ADMIN" | "ARBITER")[];
+      /**
+       * 成员类型
+       */
+      type?: string;
+      /**
+       * 用户 id
+       */
+      user?: string;
     } & {
       /**
        * mongodb id
@@ -2614,586 +407,164 @@ export interface ListFieldsResponse {
       createBy?: string;
     } & {
       /**
-       * 标题
+       * 角色
        */
-      title: string;
+      roles: ("ADMIN" | "ARBITER")[];
     })[];
     /**
-     * 表单字段标题
+     * 房间
      */
-    title: string;
-    /**
-     * 是否是必须的字段
-     */
-    required: boolean;
-    /**
-     * 字段类型
-     */
-    type: string;
-  })[];
-  headers: {
-    "x-total-count"?: number;
-  };
-}
-export interface CreateFieldRequest {
-  body: {
-    /**
-     * 表单字段的默认值
-     */
-    defaultValue?: {
-      [k: string]: any;
-    };
-    /**
-     * 字段描述
-     */
-    description?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
-    /**
-     * 字段 key
-     */
-    key?: string;
-    /**
-     * 表单字段标题
-     */
-    title?: string;
-    /**
-     * 字段的占位字符
-     */
-    placeholder?: string;
-    /**
-     * 是否是必须的字段
-     */
-    required?: boolean;
-    /**
-     * 字段校验规则
-     */
-    rules?: {}[];
-    /**
-     * 字段类型
-     */
-    type?: string;
-  } & {
-    /**
-     * 字段所属分类数组，最顶层在第一个元素
-     */
-    categories?: string[];
-    /**
-     * 表单字段标题
-     */
-    title: string;
-    /**
-     * 字段类型
-     */
-    type: string;
-  };
-}
-export interface CreateFieldResponse {
-  body: {
-    /**
-     * 表单字段的默认值
-     */
-    defaultValue?: {
-      [k: string]: any;
-    };
-    /**
-     * 字段描述
-     */
-    description?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
-    /**
-     * 字段 key
-     */
-    key?: string;
-    /**
-     * 表单字段标题
-     */
-    title?: string;
-    /**
-     * 字段的占位字符
-     */
-    placeholder?: string;
-    /**
-     * 是否是必须的字段
-     */
-    required?: boolean;
-    /**
-     * 字段校验规则
-     */
-    rules?: {}[];
-    /**
-     * 字段类型
-     */
-    type?: string;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 字段所属分类数组，最顶层在第一个元素
-     */
-    categories: ({
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 标题
-       */
-      title?: string;
-      /**
-       * 父类别
-       */
-      parent?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 标题
-       */
-      title: string;
-    })[];
-    /**
-     * 表单字段标题
-     */
-    title: string;
-    /**
-     * 是否是必须的字段
-     */
-    required: boolean;
-    /**
-     * 字段类型
-     */
-    type: string;
-  };
-}
-export interface GetFieldRequest {
-  fieldId: string;
-}
-export interface GetFieldResponse {
-  body: {
-    /**
-     * 表单字段的默认值
-     */
-    defaultValue?: {
-      [k: string]: any;
-    };
-    /**
-     * 字段描述
-     */
-    description?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
-    /**
-     * 字段 key
-     */
-    key?: string;
-    /**
-     * 表单字段标题
-     */
-    title?: string;
-    /**
-     * 字段的占位字符
-     */
-    placeholder?: string;
-    /**
-     * 是否是必须的字段
-     */
-    required?: boolean;
-    /**
-     * 字段校验规则
-     */
-    rules?: {}[];
-    /**
-     * 字段类型
-     */
-    type?: string;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 字段所属分类数组，最顶层在第一个元素
-     */
-    categories: ({
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 标题
-       */
-      title?: string;
-      /**
-       * 父类别
-       */
-      parent?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 标题
-       */
-      title: string;
-    })[];
-    /**
-     * 表单字段标题
-     */
-    title: string;
-    /**
-     * 是否是必须的字段
-     */
-    required: boolean;
-    /**
-     * 字段类型
-     */
-    type: string;
-  };
-}
-export interface UpdateFieldRequest {
-  fieldId: string;
-  /**
-   * 表单字段
-   */
-  body: {
-    /**
-     * 表单字段的默认值
-     */
-    defaultValue?: {
-      [k: string]: any;
-    };
-    /**
-     * 字段描述
-     */
-    description?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
-    /**
-     * 字段 key
-     */
-    key?: string;
-    /**
-     * 表单字段标题
-     */
-    title?: string;
-    /**
-     * 字段的占位字符
-     */
-    placeholder?: string;
-    /**
-     * 是否是必须的字段
-     */
-    required?: boolean;
-    /**
-     * 字段校验规则
-     */
-    rules?: {}[];
-    /**
-     * 字段类型
-     */
-    type?: string;
-  };
-}
-export interface UpdateFieldResponse {
-  body: {
-    /**
-     * 表单字段的默认值
-     */
-    defaultValue?: {
-      [k: string]: any;
-    };
-    /**
-     * 字段描述
-     */
-    description?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
-    /**
-     * 字段 key
-     */
-    key?: string;
-    /**
-     * 表单字段标题
-     */
-    title?: string;
-    /**
-     * 字段的占位字符
-     */
-    placeholder?: string;
-    /**
-     * 是否是必须的字段
-     */
-    required?: boolean;
-    /**
-     * 字段校验规则
-     */
-    rules?: {}[];
-    /**
-     * 字段类型
-     */
-    type?: string;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 字段所属分类数组，最顶层在第一个元素
-     */
-    categories: ({
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 标题
-       */
-      title?: string;
-      /**
-       * 父类别
-       */
-      parent?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 标题
-       */
-      title: string;
-    })[];
-    /**
-     * 表单字段标题
-     */
-    title: string;
-    /**
-     * 是否是必须的字段
-     */
-    required: boolean;
-    /**
-     * 字段类型
-     */
-    type: string;
-  };
-}
-export interface DeleteFieldRequest {
-  fieldId: string;
-}
-export interface GetCountOfAnswersRequest {
-  query?: {
-    _limit?: number;
-    _offset?: number;
-    _sort?: string;
-    _group?: ("category" | "createAt" | "field" | "inspector" | "respondent" | "sheet" | "value")[];
-    categories?: string[];
-    createAt_lt?: string;
-    createAt_gt?: string;
-    inspectors?: string[];
-    respondents?: string[];
-    ns?: string[];
-    values?: string[];
-  };
-}
-export interface GetCountOfAnswersResponse {
-  body: {
-    /**
-     * id of count group
-     */
-    id?: string;
-    /**
-     * 所属分类
-     */
-    category?: {
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 标题
-       */
-      title?: string;
-      /**
-       * 父类别
-       */
-      parent?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 标题
-       */
-      title: string;
-    };
-    /**
-     * Group of date
-     */
-    createAt?: {
-      /**
-       * day of date
-       */
-      day?: string;
-      /**
-       * week of date
-       */
-      week?: string;
-      /**
-       * month of date
-       */
-      month?: string;
-      /**
-       * year of date
-       */
-      year?: string;
-    };
-    /**
-     * 字段 id
-     */
-    field?: string;
-    /**
-     * 调查者
-     */
-    inspector?: string;
-    /**
-     * 被调查人
-     */
-    respondent?: string;
-    /**
-     * 所属表单
-     */
-    sheet?: {
-      /**
-       * 关闭时间
-       */
-      closeAt?: Date;
-      /**
-       * 最后增加答卷的时间
-       */
-      addPaperworkAt?: Date;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 行业
-       */
-      industry?: string;
-      /**
-       * 是否是模板
-       */
-      isTemplate?: boolean;
+    room: {
       /**
        * 标签
        */
       labels?: string[];
       /**
-       * logo
+       * 房间名称
        */
-      logo?: string;
+      name?: string;
+      /**
+       * 房间号
+       */
+      no?: string;
+      /**
+       * 房间状态
+       */
+      state?: "OCCUPIED" | "FREE";
+      /**
+       * 房间类型
+       */
+      type?: string;
+      /**
+       * 摄像头直播流
+       */
+      liveStreamings?: string[];
+      /**
+       * 心电监护仪 id
+       */
+      ecgMonitor?: string;
+    } & {
+      /**
+       * mongodb id
+       */
+      id: string;
+      updateAt?: Date;
+      updateBy?: string;
+      createAt?: Date;
+      createBy?: string;
+    };
+    /**
+     * 会议状态
+     */
+    state: "OPEN" | "CLOSED";
+    /**
+     * 会议开始时间
+     */
+    startAt?: Date;
+    /**
+     * 会议关闭时间
+     */
+    closeAt?: Date;
+  })[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface CreateMeetingRequest {
+  /**
+   * Meeting 创建文档
+   */
+  body: {
+    /**
+     * 会议标题
+     */
+    title?: string;
+    /**
+     * 会议类型
+     */
+    type?: string;
+    /**
+     * 标签
+     */
+    labels?: string[];
+    /**
+     * 会议状态
+     */
+    state?: "OPEN" | "CLOSED";
+    /**
+     * 图标
+     */
+    thumbnail?: string;
+  } & {
+    /**
+     * 房间
+     */
+    room: string;
+    /**
+     * 成员
+     */
+    members?: string[];
+  };
+}
+export interface CreateMeetingResponse {
+  /**
+   * Meeting
+   */
+  body: {
+    /**
+     * 会议标题
+     */
+    title?: string;
+    /**
+     * 会议类型
+     */
+    type?: string;
+    /**
+     * 标签
+     */
+    labels?: string[];
+    /**
+     * 会议状态
+     */
+    state?: "OPEN" | "CLOSED";
+    /**
+     * 图标
+     */
+    thumbnail?: string;
+  } & {
+    /**
+     * mongodb id
+     */
+    id: string;
+    updateAt?: Date;
+    updateBy?: string;
+    createAt?: Date;
+    createBy?: string;
+  } & {
+    /**
+     * 成员
+     */
+    members: ({
+      /**
+       * 头像
+       */
+      avatar?: string;
       /**
        * 名称
        */
       name?: string;
       /**
-       * 所属命名空间
+       * 角色
        */
-      ns?: string;
+      roles?: ("ADMIN" | "ARBITER")[];
       /**
-       * 拥有者
+       * 成员类型
        */
-      owner?: string;
-      refs?: {
-        /**
-         * 资源在第三方的 origin id
-         */
-        oid: string;
-        /**
-         * 来源
-         */
-        source: string;
-        /**
-         * 名称
-         */
-        name?: string;
-        /**
-         * 描述
-         */
-        description?: string;
-        /**
-         * 类型
-         */
-        type?: string;
-        /**
-         * 唯一地址
-         */
-        uri?: string;
-      }[];
+      type?: string;
       /**
-       * 别名
+       * 用户 id
        */
-      slug?: string;
-      /**
-       * 状态
-       */
-      state?: "OPEN" | "CLOSED";
-      /**
-       * 文档摘要，可以用于简介或者目录说明等
-       */
-      summary?: string;
+      user?: string;
     } & {
       /**
        * mongodb id
@@ -3205,343 +576,128 @@ export interface GetCountOfAnswersResponse {
       createBy?: string;
     } & {
       /**
-       * 字段
+       * 角色
        */
-      fields: ({
-        /**
-         * 表单字段的默认值
-         */
-        defaultValue?: {
-          [k: string]: any;
-        };
-        /**
-         * 字段描述
-         */
-        description?: string;
-        /**
-         * 是否是模板
-         */
-        isTemplate?: boolean;
-        /**
-         * 字段 key
-         */
-        key?: string;
-        /**
-         * 表单字段标题
-         */
-        title?: string;
-        /**
-         * 字段的占位字符
-         */
-        placeholder?: string;
-        /**
-         * 是否是必须的字段
-         */
-        required?: boolean;
-        /**
-         * 字段校验规则
-         */
-        rules?: {}[];
-        /**
-         * 字段类型
-         */
-        type?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 字段所属分类数组，最顶层在第一个元素
-         */
-        categories: ({
-          /**
-           * 描述
-           */
-          description?: string;
-          /**
-           * 标题
-           */
-          title?: string;
-          /**
-           * 父类别
-           */
-          parent?: string;
-        } & {
-          /**
-           * mongodb id
-           */
-          id: string;
-          updateAt?: Date;
-          updateBy?: string;
-          createAt?: Date;
-          createBy?: string;
-        } & {
-          /**
-           * 标题
-           */
-          title: string;
-        })[];
-        /**
-         * 表单字段标题
-         */
-        title: string;
-        /**
-         * 是否是必须的字段
-         */
-        required: boolean;
-        /**
-         * 字段类型
-         */
-        type: string;
-      })[];
-      /**
-       * 标签
-       */
-      labels: string[];
-      /**
-       * 名称
-       */
-      name: string;
-      refs: {
-        /**
-         * 资源在第三方的 origin id
-         */
-        oid: string;
-        /**
-         * 来源
-         */
-        source: string;
-        /**
-         * 名称
-         */
-        name?: string;
-        /**
-         * 描述
-         */
-        description?: string;
-        /**
-         * 类型
-         */
-        type?: string;
-        /**
-         * 唯一地址
-         */
-        uri?: string;
-      }[];
-      /**
-       * 状态
-       */
-      state: "OPEN" | "CLOSED";
-      /**
-       * 拥有者
-       */
-      owner: string;
-    };
-    value?: any;
+      roles: ("ADMIN" | "ARBITER")[];
+    })[];
     /**
-     * 计数
+     * 房间
      */
-    count?: number;
-  }[];
-}
-export interface GetCountOfSheetsRequest {
-  query?: {
-    _limit?: number;
-    _offset?: number;
-    _sort?: string;
-    _group?: ("createAt" | "labels" | "industry" | "ns")[];
-    createAt_lt?: string;
-    createAt_gt?: string;
-    labels?: string[];
-    state?: "OPEN" | "CLOSED";
-  };
-}
-export interface GetCountOfSheetsResponse {
-  body: {
-    /**
-     * id of count group
-     */
-    id?: string;
-    /**
-     * Group of date
-     */
-    createAt?: {
-      /**
-       * day of date
-       */
-      day?: string;
-      /**
-       * week of date
-       */
-      week?: string;
-      /**
-       * month of date
-       */
-      month?: string;
-      /**
-       * year of date
-       */
-      year?: string;
-    };
-    /**
-     * 标签
-     */
-    labels?: string;
-    /**
-     * 行业
-     */
-    industry?: string;
-    /**
-     * 所属命名空间
-     */
-    ns?: string;
-    /**
-     * 计数
-     */
-    count?: number;
-  }[];
-}
-export interface GetCountOfPaperworksRequest {
-  query?: {
-    _limit?: number;
-    _offset?: number;
-    _sort?: string;
-    _group?: ("createAt" | "inspector" | "ns" | "respondent" | "sheet")[];
-    createAt_lt?: string;
-    createAt_gt?: string;
-    inspectors?: string[];
-    respondents?: string[];
-    sheets?: string[];
-    ns?: string[];
-  };
-}
-export interface GetCountOfPaperworksResponse {
-  body: {
-    /**
-     * id of count group
-     */
-    id?: string;
-    /**
-     * Group of date
-     */
-    createAt?: {
-      /**
-       * day of date
-       */
-      day?: string;
-      /**
-       * week of date
-       */
-      week?: string;
-      /**
-       * month of date
-       */
-      month?: string;
-      /**
-       * year of date
-       */
-      year?: string;
-    };
-    /**
-     * 调查者
-     */
-    inspector?: string;
-    /**
-     * 所属命名空间
-     */
-    ns?: string;
-    /**
-     * 被调查人
-     */
-    respondent?: string;
-    /**
-     * 所属表单
-     */
-    sheet?: {
-      /**
-       * 关闭时间
-       */
-      closeAt?: Date;
-      /**
-       * 最后增加答卷的时间
-       */
-      addPaperworkAt?: Date;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 行业
-       */
-      industry?: string;
-      /**
-       * 是否是模板
-       */
-      isTemplate?: boolean;
+    room: {
       /**
        * 标签
        */
       labels?: string[];
       /**
-       * logo
+       * 房间名称
        */
-      logo?: string;
+      name?: string;
+      /**
+       * 房间号
+       */
+      no?: string;
+      /**
+       * 房间状态
+       */
+      state?: "OCCUPIED" | "FREE";
+      /**
+       * 房间类型
+       */
+      type?: string;
+      /**
+       * 摄像头直播流
+       */
+      liveStreamings?: string[];
+      /**
+       * 心电监护仪 id
+       */
+      ecgMonitor?: string;
+    } & {
+      /**
+       * mongodb id
+       */
+      id: string;
+      updateAt?: Date;
+      updateBy?: string;
+      createAt?: Date;
+      createBy?: string;
+    };
+    /**
+     * 会议状态
+     */
+    state: "OPEN" | "CLOSED";
+    /**
+     * 会议开始时间
+     */
+    startAt?: Date;
+    /**
+     * 会议关闭时间
+     */
+    closeAt?: Date;
+  };
+}
+export interface GetMeetingRequest {
+  meetingId: string;
+}
+export interface GetMeetingResponse {
+  /**
+   * Meeting
+   */
+  body: {
+    /**
+     * 会议标题
+     */
+    title?: string;
+    /**
+     * 会议类型
+     */
+    type?: string;
+    /**
+     * 标签
+     */
+    labels?: string[];
+    /**
+     * 会议状态
+     */
+    state?: "OPEN" | "CLOSED";
+    /**
+     * 图标
+     */
+    thumbnail?: string;
+  } & {
+    /**
+     * mongodb id
+     */
+    id: string;
+    updateAt?: Date;
+    updateBy?: string;
+    createAt?: Date;
+    createBy?: string;
+  } & {
+    /**
+     * 成员
+     */
+    members: ({
+      /**
+       * 头像
+       */
+      avatar?: string;
       /**
        * 名称
        */
       name?: string;
       /**
-       * 所属命名空间
+       * 角色
        */
-      ns?: string;
+      roles?: ("ADMIN" | "ARBITER")[];
       /**
-       * 拥有者
+       * 成员类型
        */
-      owner?: string;
-      refs?: {
-        /**
-         * 资源在第三方的 origin id
-         */
-        oid: string;
-        /**
-         * 来源
-         */
-        source: string;
-        /**
-         * 名称
-         */
-        name?: string;
-        /**
-         * 描述
-         */
-        description?: string;
-        /**
-         * 类型
-         */
-        type?: string;
-        /**
-         * 唯一地址
-         */
-        uri?: string;
-      }[];
+      type?: string;
       /**
-       * 别名
+       * 用户 id
        */
-      slug?: string;
-      /**
-       * 状态
-       */
-      state?: "OPEN" | "CLOSED";
-      /**
-       * 文档摘要，可以用于简介或者目录说明等
-       */
-      summary?: string;
+      user?: string;
     } & {
       /**
        * mongodb id
@@ -3553,149 +709,432 @@ export interface GetCountOfPaperworksResponse {
       createBy?: string;
     } & {
       /**
-       * 字段
+       * 角色
        */
-      fields: ({
-        /**
-         * 表单字段的默认值
-         */
-        defaultValue?: {
-          [k: string]: any;
-        };
-        /**
-         * 字段描述
-         */
-        description?: string;
-        /**
-         * 是否是模板
-         */
-        isTemplate?: boolean;
-        /**
-         * 字段 key
-         */
-        key?: string;
-        /**
-         * 表单字段标题
-         */
-        title?: string;
-        /**
-         * 字段的占位字符
-         */
-        placeholder?: string;
-        /**
-         * 是否是必须的字段
-         */
-        required?: boolean;
-        /**
-         * 字段校验规则
-         */
-        rules?: {}[];
-        /**
-         * 字段类型
-         */
-        type?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 字段所属分类数组，最顶层在第一个元素
-         */
-        categories: ({
-          /**
-           * 描述
-           */
-          description?: string;
-          /**
-           * 标题
-           */
-          title?: string;
-          /**
-           * 父类别
-           */
-          parent?: string;
-        } & {
-          /**
-           * mongodb id
-           */
-          id: string;
-          updateAt?: Date;
-          updateBy?: string;
-          createAt?: Date;
-          createBy?: string;
-        } & {
-          /**
-           * 标题
-           */
-          title: string;
-        })[];
-        /**
-         * 表单字段标题
-         */
-        title: string;
-        /**
-         * 是否是必须的字段
-         */
-        required: boolean;
-        /**
-         * 字段类型
-         */
-        type: string;
-      })[];
+      roles: ("ADMIN" | "ARBITER")[];
+    })[];
+    /**
+     * 房间
+     */
+    room: {
       /**
        * 标签
        */
-      labels: string[];
+      labels?: string[];
+      /**
+       * 房间名称
+       */
+      name?: string;
+      /**
+       * 房间号
+       */
+      no?: string;
+      /**
+       * 房间状态
+       */
+      state?: "OCCUPIED" | "FREE";
+      /**
+       * 房间类型
+       */
+      type?: string;
+      /**
+       * 摄像头直播流
+       */
+      liveStreamings?: string[];
+      /**
+       * 心电监护仪 id
+       */
+      ecgMonitor?: string;
+    } & {
+      /**
+       * mongodb id
+       */
+      id: string;
+      updateAt?: Date;
+      updateBy?: string;
+      createAt?: Date;
+      createBy?: string;
+    };
+    /**
+     * 会议状态
+     */
+    state: "OPEN" | "CLOSED";
+    /**
+     * 会议开始时间
+     */
+    startAt?: Date;
+    /**
+     * 会议关闭时间
+     */
+    closeAt?: Date;
+  };
+}
+export interface UpdateMeetingRequest {
+  meetingId: string;
+  /**
+   * Meeting doc
+   */
+  body: {
+    /**
+     * 会议标题
+     */
+    title?: string;
+    /**
+     * 会议类型
+     */
+    type?: string;
+    /**
+     * 标签
+     */
+    labels?: string[];
+    /**
+     * 会议状态
+     */
+    state?: "OPEN" | "CLOSED";
+    /**
+     * 图标
+     */
+    thumbnail?: string;
+  };
+}
+export interface UpdateMeetingResponse {
+  /**
+   * Meeting
+   */
+  body: {
+    /**
+     * 会议标题
+     */
+    title?: string;
+    /**
+     * 会议类型
+     */
+    type?: string;
+    /**
+     * 标签
+     */
+    labels?: string[];
+    /**
+     * 会议状态
+     */
+    state?: "OPEN" | "CLOSED";
+    /**
+     * 图标
+     */
+    thumbnail?: string;
+  } & {
+    /**
+     * mongodb id
+     */
+    id: string;
+    updateAt?: Date;
+    updateBy?: string;
+    createAt?: Date;
+    createBy?: string;
+  } & {
+    /**
+     * 成员
+     */
+    members: ({
+      /**
+       * 头像
+       */
+      avatar?: string;
       /**
        * 名称
        */
-      name: string;
-      refs: {
-        /**
-         * 资源在第三方的 origin id
-         */
-        oid: string;
-        /**
-         * 来源
-         */
-        source: string;
-        /**
-         * 名称
-         */
-        name?: string;
-        /**
-         * 描述
-         */
-        description?: string;
-        /**
-         * 类型
-         */
-        type?: string;
-        /**
-         * 唯一地址
-         */
-        uri?: string;
-      }[];
+      name?: string;
       /**
-       * 状态
+       * 角色
        */
-      state: "OPEN" | "CLOSED";
+      roles?: ("ADMIN" | "ARBITER")[];
       /**
-       * 拥有者
+       * 成员类型
        */
-      owner: string;
+      type?: string;
+      /**
+       * 用户 id
+       */
+      user?: string;
+    } & {
+      /**
+       * mongodb id
+       */
+      id: string;
+      updateAt?: Date;
+      updateBy?: string;
+      createAt?: Date;
+      createBy?: string;
+    } & {
+      /**
+       * 角色
+       */
+      roles: ("ADMIN" | "ARBITER")[];
+    })[];
+    /**
+     * 房间
+     */
+    room: {
+      /**
+       * 标签
+       */
+      labels?: string[];
+      /**
+       * 房间名称
+       */
+      name?: string;
+      /**
+       * 房间号
+       */
+      no?: string;
+      /**
+       * 房间状态
+       */
+      state?: "OCCUPIED" | "FREE";
+      /**
+       * 房间类型
+       */
+      type?: string;
+      /**
+       * 摄像头直播流
+       */
+      liveStreamings?: string[];
+      /**
+       * 心电监护仪 id
+       */
+      ecgMonitor?: string;
+    } & {
+      /**
+       * mongodb id
+       */
+      id: string;
+      updateAt?: Date;
+      updateBy?: string;
+      createAt?: Date;
+      createBy?: string;
     };
     /**
-     * 计数
+     * 会议状态
      */
-    count?: number;
-  }[];
+    state: "OPEN" | "CLOSED";
+    /**
+     * 会议开始时间
+     */
+    startAt?: Date;
+    /**
+     * 会议关闭时间
+     */
+    closeAt?: Date;
+  };
+}
+export interface DeleteMeetingRequest {
+  meetingId: string;
+}
+export interface CloseMeetingRequest {
+  meetingId: string;
+}
+export interface CloseMeetingResponse {
+  /**
+   * Meeting
+   */
+  body: {
+    /**
+     * 会议标题
+     */
+    title?: string;
+    /**
+     * 会议类型
+     */
+    type?: string;
+    /**
+     * 标签
+     */
+    labels?: string[];
+    /**
+     * 会议状态
+     */
+    state?: "OPEN" | "CLOSED";
+    /**
+     * 图标
+     */
+    thumbnail?: string;
+  } & {
+    /**
+     * mongodb id
+     */
+    id: string;
+    updateAt?: Date;
+    updateBy?: string;
+    createAt?: Date;
+    createBy?: string;
+  } & {
+    /**
+     * 成员
+     */
+    members: ({
+      /**
+       * 头像
+       */
+      avatar?: string;
+      /**
+       * 名称
+       */
+      name?: string;
+      /**
+       * 角色
+       */
+      roles?: ("ADMIN" | "ARBITER")[];
+      /**
+       * 成员类型
+       */
+      type?: string;
+      /**
+       * 用户 id
+       */
+      user?: string;
+    } & {
+      /**
+       * mongodb id
+       */
+      id: string;
+      updateAt?: Date;
+      updateBy?: string;
+      createAt?: Date;
+      createBy?: string;
+    } & {
+      /**
+       * 角色
+       */
+      roles: ("ADMIN" | "ARBITER")[];
+    })[];
+    /**
+     * 房间
+     */
+    room: {
+      /**
+       * 标签
+       */
+      labels?: string[];
+      /**
+       * 房间名称
+       */
+      name?: string;
+      /**
+       * 房间号
+       */
+      no?: string;
+      /**
+       * 房间状态
+       */
+      state?: "OCCUPIED" | "FREE";
+      /**
+       * 房间类型
+       */
+      type?: string;
+      /**
+       * 摄像头直播流
+       */
+      liveStreamings?: string[];
+      /**
+       * 心电监护仪 id
+       */
+      ecgMonitor?: string;
+    } & {
+      /**
+       * mongodb id
+       */
+      id: string;
+      updateAt?: Date;
+      updateBy?: string;
+      createAt?: Date;
+      createBy?: string;
+    };
+    /**
+     * 会议状态
+     */
+    state: "OPEN" | "CLOSED";
+    /**
+     * 会议开始时间
+     */
+    startAt?: Date;
+    /**
+     * 会议关闭时间
+     */
+    closeAt?: Date;
+  };
+}
+export interface AddMemberRequest {
+  meetingId: string;
+  /**
+   * Member create doc
+   */
+  body: {
+    /**
+     * 头像
+     */
+    avatar?: string;
+    /**
+     * 名称
+     */
+    name?: string;
+    /**
+     * 角色
+     */
+    roles?: ("ADMIN" | "ARBITER")[];
+    /**
+     * 成员类型
+     */
+    type?: string;
+    /**
+     * 用户 id
+     */
+    user?: string;
+  };
+}
+export interface AddMemberResponse {
+  /**
+   * Member response doc
+   */
+  body: {
+    /**
+     * 头像
+     */
+    avatar?: string;
+    /**
+     * 名称
+     */
+    name?: string;
+    /**
+     * 角色
+     */
+    roles?: ("ADMIN" | "ARBITER")[];
+    /**
+     * 成员类型
+     */
+    type?: string;
+    /**
+     * 用户 id
+     */
+    user?: string;
+  } & {
+    /**
+     * mongodb id
+     */
+    id: string;
+    updateAt?: Date;
+    updateBy?: string;
+    createAt?: Date;
+    createBy?: string;
+  } & {
+    /**
+     * 角色
+     */
+    roles: ("ADMIN" | "ARBITER")[];
+  };
+}
+export interface RemoveMemberRequest {
+  meetingId: string;
+  memberId: string;
 }
 export type DateTime = Date;
 
@@ -3708,425 +1147,199 @@ export interface AnyValue {
   [k: string]: any;
 }
 
-export type State = "OPEN" | "CLOSED";
+export type RoomState = "OCCUPIED" | "FREE";
 
-export type AnswerCountGroup =
-  | "category"
-  | "createAt"
-  | "field"
-  | "inspector"
-  | "respondent"
-  | "sheet"
-  | "value";
+export type MeetingState = "OPEN" | "CLOSED";
 
-export type PaperworkCountGroup = "createAt" | "inspector" | "ns" | "respondent" | "sheet";
-
-export type SheetCountGroup = "createAt" | "labels" | "industry" | "ns";
+export type MeetingRole = "ADMIN" | "ARBITER";
 
 /**
- * Group of date
+ * Room doc
  */
-export interface GroupDate {
+export interface RoomDoc {
   /**
-   * day of date
+   * 标签
    */
-  day?: string;
+  labels?: string[];
   /**
-   * week of date
-   */
-  week?: string;
-  /**
-   * month of date
-   */
-  month?: string;
-  /**
-   * year of date
-   */
-  year?: string;
-}
-
-/**
- * 第三方资源关联
- */
-export interface Reference {
-  /**
-   * 资源在第三方的 origin id
-   */
-  oid: string;
-  /**
-   * 来源
-   */
-  source: string;
-  /**
-   * 名称
+   * 房间名称
    */
   name?: string;
   /**
-   * 描述
+   * 房间号
    */
-  description?: string;
+  no?: string;
   /**
-   * 类型
+   * 房间状态
+   */
+  state?: "OCCUPIED" | "FREE";
+  /**
+   * 房间类型
    */
   type?: string;
   /**
-   * 唯一地址
+   * 摄像头直播流
    */
-  uri?: string;
+  liveStreamings?: string[];
+  /**
+   * 心电监护仪 id
+   */
+  ecgMonitor?: string;
 }
 
 /**
- * 表单 Doc
+ * Room 创建文档
  */
-export interface SheetDoc {
-  /**
-   * 关闭时间
-   */
-  closeAt?: Date;
-  /**
-   * 最后增加答卷的时间
-   */
-  addPaperworkAt?: Date;
-  /**
-   * 描述
-   */
-  description?: string;
-  /**
-   * 行业
-   */
-  industry?: string;
-  /**
-   * 是否是模板
-   */
-  isTemplate?: boolean;
+export type RoomCreateDoc = {
   /**
    * 标签
    */
   labels?: string[];
   /**
-   * logo
+   * 房间名称
    */
-  logo?: string;
+  name?: string;
+  /**
+   * 房间号
+   */
+  no?: string;
+  /**
+   * 房间状态
+   */
+  state?: "OCCUPIED" | "FREE";
+  /**
+   * 房间类型
+   */
+  type?: string;
+  /**
+   * 摄像头直播流
+   */
+  liveStreamings?: string[];
+  /**
+   * 心电监护仪 id
+   */
+  ecgMonitor?: string;
+};
+
+/**
+ * Rfid device
+ */
+export type Room = {
+  /**
+   * 标签
+   */
+  labels?: string[];
+  /**
+   * 房间名称
+   */
+  name?: string;
+  /**
+   * 房间号
+   */
+  no?: string;
+  /**
+   * 房间状态
+   */
+  state?: "OCCUPIED" | "FREE";
+  /**
+   * 房间类型
+   */
+  type?: string;
+  /**
+   * 摄像头直播流
+   */
+  liveStreamings?: string[];
+  /**
+   * 心电监护仪 id
+   */
+  ecgMonitor?: string;
+} & {
+  /**
+   * mongodb id
+   */
+  id: string;
+  updateAt?: Date;
+  updateBy?: string;
+  createAt?: Date;
+  createBy?: string;
+};
+
+/**
+ * Member doc
+ */
+export interface MemberDoc {
+  /**
+   * 头像
+   */
+  avatar?: string;
   /**
    * 名称
    */
   name?: string;
   /**
-   * 所属命名空间
+   * 角色
    */
-  ns?: string;
+  roles?: ("ADMIN" | "ARBITER")[];
   /**
-   * 拥有者
+   * 成员类型
    */
-  owner?: string;
-  refs?: {
-    /**
-     * 资源在第三方的 origin id
-     */
-    oid: string;
-    /**
-     * 来源
-     */
-    source: string;
-    /**
-     * 名称
-     */
-    name?: string;
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 类型
-     */
-    type?: string;
-    /**
-     * 唯一地址
-     */
-    uri?: string;
-  }[];
+  type?: string;
   /**
-   * 别名
+   * 用户 id
    */
-  slug?: string;
-  /**
-   * 状态
-   */
-  state?: "OPEN" | "CLOSED";
-  /**
-   * 文档摘要，可以用于简介或者目录说明等
-   */
-  summary?: string;
+  user?: string;
 }
 
 /**
- * 表单创建文档
+ * Member create doc
  */
-export type SheetCreateDoc = {
+export type MemberCreateDoc = {
   /**
-   * 关闭时间
+   * 头像
    */
-  closeAt?: Date;
-  /**
-   * 最后增加答卷的时间
-   */
-  addPaperworkAt?: Date;
-  /**
-   * 描述
-   */
-  description?: string;
-  /**
-   * 行业
-   */
-  industry?: string;
-  /**
-   * 是否是模板
-   */
-  isTemplate?: boolean;
-  /**
-   * 标签
-   */
-  labels?: string[];
-  /**
-   * logo
-   */
-  logo?: string;
+  avatar?: string;
   /**
    * 名称
    */
   name?: string;
   /**
-   * 所属命名空间
+   * 角色
    */
-  ns?: string;
+  roles?: ("ADMIN" | "ARBITER")[];
   /**
-   * 拥有者
+   * 成员类型
    */
-  owner?: string;
-  refs?: {
-    /**
-     * 资源在第三方的 origin id
-     */
-    oid: string;
-    /**
-     * 来源
-     */
-    source: string;
-    /**
-     * 名称
-     */
-    name?: string;
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 类型
-     */
-    type?: string;
-    /**
-     * 唯一地址
-     */
-    uri?: string;
-  }[];
+  type?: string;
   /**
-   * 别名
+   * 用户 id
    */
-  slug?: string;
-  /**
-   * 状态
-   */
-  state?: "OPEN" | "CLOSED";
-  /**
-   * 文档摘要，可以用于简介或者目录说明等
-   */
-  summary?: string;
-} & {
-  /**
-   * 字段
-   */
-  fields: string[];
-  /**
-   * 名称
-   */
-  name: string;
-  /**
-   * 拥有者
-   */
-  owner: string;
+  user?: string;
 };
 
 /**
- * 表单创建文档
+ * Member response doc
  */
-export type SheetUpdateDoc = {
+export type Member = {
   /**
-   * 关闭时间
+   * 头像
    */
-  closeAt?: Date;
-  /**
-   * 最后增加答卷的时间
-   */
-  addPaperworkAt?: Date;
-  /**
-   * 描述
-   */
-  description?: string;
-  /**
-   * 行业
-   */
-  industry?: string;
-  /**
-   * 是否是模板
-   */
-  isTemplate?: boolean;
-  /**
-   * 标签
-   */
-  labels?: string[];
-  /**
-   * logo
-   */
-  logo?: string;
+  avatar?: string;
   /**
    * 名称
    */
   name?: string;
   /**
-   * 所属命名空间
+   * 角色
    */
-  ns?: string;
+  roles?: ("ADMIN" | "ARBITER")[];
   /**
-   * 拥有者
+   * 成员类型
    */
-  owner?: string;
-  refs?: {
-    /**
-     * 资源在第三方的 origin id
-     */
-    oid: string;
-    /**
-     * 来源
-     */
-    source: string;
-    /**
-     * 名称
-     */
-    name?: string;
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 类型
-     */
-    type?: string;
-    /**
-     * 唯一地址
-     */
-    uri?: string;
-  }[];
+  type?: string;
   /**
-   * 别名
+   * 用户 id
    */
-  slug?: string;
-  /**
-   * 状态
-   */
-  state?: "OPEN" | "CLOSED";
-  /**
-   * 文档摘要，可以用于简介或者目录说明等
-   */
-  summary?: string;
-} & {
-  /**
-   * 字段
-   */
-  fields?: string[];
-};
-
-/**
- * 表单
- */
-export type Sheet = {
-  /**
-   * 关闭时间
-   */
-  closeAt?: Date;
-  /**
-   * 最后增加答卷的时间
-   */
-  addPaperworkAt?: Date;
-  /**
-   * 描述
-   */
-  description?: string;
-  /**
-   * 行业
-   */
-  industry?: string;
-  /**
-   * 是否是模板
-   */
-  isTemplate?: boolean;
-  /**
-   * 标签
-   */
-  labels?: string[];
-  /**
-   * logo
-   */
-  logo?: string;
-  /**
-   * 名称
-   */
-  name?: string;
-  /**
-   * 所属命名空间
-   */
-  ns?: string;
-  /**
-   * 拥有者
-   */
-  owner?: string;
-  refs?: {
-    /**
-     * 资源在第三方的 origin id
-     */
-    oid: string;
-    /**
-     * 来源
-     */
-    source: string;
-    /**
-     * 名称
-     */
-    name?: string;
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 类型
-     */
-    type?: string;
-    /**
-     * 唯一地址
-     */
-    uri?: string;
-  }[];
-  /**
-   * 别名
-   */
-  slug?: string;
-  /**
-   * 状态
-   */
-  state?: "OPEN" | "CLOSED";
-  /**
-   * 文档摘要，可以用于简介或者目录说明等
-   */
-  summary?: string;
+  user?: string;
 } & {
   /**
    * mongodb id
@@ -4138,47 +1351,130 @@ export type Sheet = {
   createBy?: string;
 } & {
   /**
-   * 字段
+   * 角色
    */
-  fields: ({
+  roles: ("ADMIN" | "ARBITER")[];
+};
+
+/**
+ * Meeting doc
+ */
+export interface MeetingDoc {
+  /**
+   * 会议标题
+   */
+  title?: string;
+  /**
+   * 会议类型
+   */
+  type?: string;
+  /**
+   * 标签
+   */
+  labels?: string[];
+  /**
+   * 会议状态
+   */
+  state?: "OPEN" | "CLOSED";
+  /**
+   * 图标
+   */
+  thumbnail?: string;
+}
+
+/**
+ * Meeting 创建文档
+ */
+export type MeetingCreateDoc = {
+  /**
+   * 会议标题
+   */
+  title?: string;
+  /**
+   * 会议类型
+   */
+  type?: string;
+  /**
+   * 标签
+   */
+  labels?: string[];
+  /**
+   * 会议状态
+   */
+  state?: "OPEN" | "CLOSED";
+  /**
+   * 图标
+   */
+  thumbnail?: string;
+} & {
+  /**
+   * 房间
+   */
+  room: string;
+  /**
+   * 成员
+   */
+  members?: string[];
+};
+
+/**
+ * Meeting
+ */
+export type Meeting = {
+  /**
+   * 会议标题
+   */
+  title?: string;
+  /**
+   * 会议类型
+   */
+  type?: string;
+  /**
+   * 标签
+   */
+  labels?: string[];
+  /**
+   * 会议状态
+   */
+  state?: "OPEN" | "CLOSED";
+  /**
+   * 图标
+   */
+  thumbnail?: string;
+} & {
+  /**
+   * mongodb id
+   */
+  id: string;
+  updateAt?: Date;
+  updateBy?: string;
+  createAt?: Date;
+  createBy?: string;
+} & {
+  /**
+   * 成员
+   */
+  members: ({
     /**
-     * 表单字段的默认值
+     * 头像
      */
-    defaultValue?: {
-      [k: string]: any;
-    };
+    avatar?: string;
     /**
-     * 字段描述
+     * 名称
      */
-    description?: string;
+    name?: string;
     /**
-     * 是否是模板
+     * 角色
      */
-    isTemplate?: boolean;
+    roles?: ("ADMIN" | "ARBITER")[];
     /**
-     * 字段 key
-     */
-    key?: string;
-    /**
-     * 表单字段标题
-     */
-    title?: string;
-    /**
-     * 字段的占位字符
-     */
-    placeholder?: string;
-    /**
-     * 是否是必须的字段
-     */
-    required?: boolean;
-    /**
-     * 字段校验规则
-     */
-    rules?: {}[];
-    /**
-     * 字段类型
+     * 成员类型
      */
     type?: string;
+    /**
+     * 用户 id
+     */
+    user?: string;
   } & {
     /**
      * mongodb id
@@ -4190,1801 +1486,65 @@ export type Sheet = {
     createBy?: string;
   } & {
     /**
-     * 字段所属分类数组，最顶层在第一个元素
+     * 角色
      */
-    categories: ({
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 标题
-       */
-      title?: string;
-      /**
-       * 父类别
-       */
-      parent?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 标题
-       */
-      title: string;
-    })[];
-    /**
-     * 表单字段标题
-     */
-    title: string;
-    /**
-     * 是否是必须的字段
-     */
-    required: boolean;
-    /**
-     * 字段类型
-     */
-    type: string;
+    roles: ("ADMIN" | "ARBITER")[];
   })[];
   /**
-   * 标签
+   * 房间
    */
-  labels: string[];
-  /**
-   * 名称
-   */
-  name: string;
-  refs: {
+  room: {
     /**
-     * 资源在第三方的 origin id
+     * 标签
      */
-    oid: string;
+    labels?: string[];
     /**
-     * 来源
-     */
-    source: string;
-    /**
-     * 名称
+     * 房间名称
      */
     name?: string;
     /**
-     * 描述
+     * 房间号
      */
-    description?: string;
+    no?: string;
     /**
-     * 类型
+     * 房间状态
+     */
+    state?: "OCCUPIED" | "FREE";
+    /**
+     * 房间类型
      */
     type?: string;
     /**
-     * 唯一地址
+     * 摄像头直播流
      */
-    uri?: string;
-  }[];
+    liveStreamings?: string[];
+    /**
+     * 心电监护仪 id
+     */
+    ecgMonitor?: string;
+  } & {
+    /**
+     * mongodb id
+     */
+    id: string;
+    updateAt?: Date;
+    updateBy?: string;
+    createAt?: Date;
+    createBy?: string;
+  };
   /**
-   * 状态
+   * 会议状态
    */
   state: "OPEN" | "CLOSED";
   /**
-   * 拥有者
+   * 会议开始时间
    */
-  owner: string;
+  startAt?: Date;
+  /**
+   * 会议关闭时间
+   */
+  closeAt?: Date;
 };
-
-/**
- * 类别 Doc
- */
-export interface CategoryDoc {
-  /**
-   * 描述
-   */
-  description?: string;
-  /**
-   * 标题
-   */
-  title?: string;
-  /**
-   * 父类别
-   */
-  parent?: string;
-}
-
-export type CategoryCreateDoc = {
-  /**
-   * 描述
-   */
-  description?: string;
-  /**
-   * 标题
-   */
-  title?: string;
-  /**
-   * 父类别
-   */
-  parent?: string;
-} & {
-  /**
-   * 标题
-   */
-  title: string;
-};
-
-/**
- * 类别
- */
-export type Category = {
-  /**
-   * 描述
-   */
-  description?: string;
-  /**
-   * 标题
-   */
-  title?: string;
-  /**
-   * 父类别
-   */
-  parent?: string;
-} & {
-  /**
-   * mongodb id
-   */
-  id: string;
-  updateAt?: Date;
-  updateBy?: string;
-  createAt?: Date;
-  createBy?: string;
-} & {
-  /**
-   * 标题
-   */
-  title: string;
-};
-
-/**
- * 表单字段
- */
-export interface FieldDoc {
-  /**
-   * 表单字段的默认值
-   */
-  defaultValue?: {
-    [k: string]: any;
-  };
-  /**
-   * 字段描述
-   */
-  description?: string;
-  /**
-   * 是否是模板
-   */
-  isTemplate?: boolean;
-  /**
-   * 字段 key
-   */
-  key?: string;
-  /**
-   * 表单字段标题
-   */
-  title?: string;
-  /**
-   * 字段的占位字符
-   */
-  placeholder?: string;
-  /**
-   * 是否是必须的字段
-   */
-  required?: boolean;
-  /**
-   * 字段校验规则
-   */
-  rules?: {}[];
-  /**
-   * 字段类型
-   */
-  type?: string;
-}
-
-export type FieldCreateDoc = {
-  /**
-   * 表单字段的默认值
-   */
-  defaultValue?: {
-    [k: string]: any;
-  };
-  /**
-   * 字段描述
-   */
-  description?: string;
-  /**
-   * 是否是模板
-   */
-  isTemplate?: boolean;
-  /**
-   * 字段 key
-   */
-  key?: string;
-  /**
-   * 表单字段标题
-   */
-  title?: string;
-  /**
-   * 字段的占位字符
-   */
-  placeholder?: string;
-  /**
-   * 是否是必须的字段
-   */
-  required?: boolean;
-  /**
-   * 字段校验规则
-   */
-  rules?: {}[];
-  /**
-   * 字段类型
-   */
-  type?: string;
-} & {
-  /**
-   * 字段所属分类数组，最顶层在第一个元素
-   */
-  categories?: string[];
-  /**
-   * 表单字段标题
-   */
-  title: string;
-  /**
-   * 字段类型
-   */
-  type: string;
-};
-
-export type Field = {
-  /**
-   * 表单字段的默认值
-   */
-  defaultValue?: {
-    [k: string]: any;
-  };
-  /**
-   * 字段描述
-   */
-  description?: string;
-  /**
-   * 是否是模板
-   */
-  isTemplate?: boolean;
-  /**
-   * 字段 key
-   */
-  key?: string;
-  /**
-   * 表单字段标题
-   */
-  title?: string;
-  /**
-   * 字段的占位字符
-   */
-  placeholder?: string;
-  /**
-   * 是否是必须的字段
-   */
-  required?: boolean;
-  /**
-   * 字段校验规则
-   */
-  rules?: {}[];
-  /**
-   * 字段类型
-   */
-  type?: string;
-} & {
-  /**
-   * mongodb id
-   */
-  id: string;
-  updateAt?: Date;
-  updateBy?: string;
-  createAt?: Date;
-  createBy?: string;
-} & {
-  /**
-   * 字段所属分类数组，最顶层在第一个元素
-   */
-  categories: ({
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 标题
-     */
-    title?: string;
-    /**
-     * 父类别
-     */
-    parent?: string;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 标题
-     */
-    title: string;
-  })[];
-  /**
-   * 表单字段标题
-   */
-  title: string;
-  /**
-   * 是否是必须的字段
-   */
-  required: boolean;
-  /**
-   * 字段类型
-   */
-  type: string;
-};
-
-/**
- * 回答
- */
-export interface AnswerDoc {
-  /**
-   * 字段 key
-   */
-  key?: string;
-  /**
-   * 表单字段标题
-   */
-  title: string;
-  /**
-   * 备注
-   */
-  remark?: string;
-  /**
-   * 值
-   */
-  value: {
-    [k: string]: any;
-  };
-}
-
-export type AnswerCreateDoc = {
-  /**
-   * 字段 key
-   */
-  key?: string;
-  /**
-   * 表单字段标题
-   */
-  title: string;
-  /**
-   * 备注
-   */
-  remark?: string;
-  /**
-   * 值
-   */
-  value: {
-    [k: string]: any;
-  };
-} & {
-  /**
-   * field id
-   */
-  field?: string;
-};
-
-export type Answer = {
-  /**
-   * 字段 key
-   */
-  key?: string;
-  /**
-   * 表单字段标题
-   */
-  title: string;
-  /**
-   * 备注
-   */
-  remark?: string;
-  /**
-   * 值
-   */
-  value: {
-    [k: string]: any;
-  };
-} & {
-  /**
-   * mongodb id
-   */
-  id: string;
-  updateAt?: Date;
-  updateBy?: string;
-  createAt?: Date;
-  createBy?: string;
-} & {
-  /**
-   * 字段
-   */
-  field: {
-    /**
-     * 表单字段的默认值
-     */
-    defaultValue?: {
-      [k: string]: any;
-    };
-    /**
-     * 字段描述
-     */
-    description?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
-    /**
-     * 字段 key
-     */
-    key?: string;
-    /**
-     * 表单字段标题
-     */
-    title?: string;
-    /**
-     * 字段的占位字符
-     */
-    placeholder?: string;
-    /**
-     * 是否是必须的字段
-     */
-    required?: boolean;
-    /**
-     * 字段校验规则
-     */
-    rules?: {}[];
-    /**
-     * 字段类型
-     */
-    type?: string;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 字段所属分类数组，最顶层在第一个元素
-     */
-    categories: ({
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 标题
-       */
-      title?: string;
-      /**
-       * 父类别
-       */
-      parent?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 标题
-       */
-      title: string;
-    })[];
-    /**
-     * 表单字段标题
-     */
-    title: string;
-    /**
-     * 是否是必须的字段
-     */
-    required: boolean;
-    /**
-     * 字段类型
-     */
-    type: string;
-  };
-};
-
-/**
- * 填表结果
- */
-export interface PaperworkDoc {
-  /**
-   * 答案
-   */
-  answers?: ({
-    /**
-     * 字段 key
-     */
-    key?: string;
-    /**
-     * 表单字段标题
-     */
-    title: string;
-    /**
-     * 备注
-     */
-    remark?: string;
-    /**
-     * 值
-     */
-    value: {
-      [k: string]: any;
-    };
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 字段
-     */
-    field: {
-      /**
-       * 表单字段的默认值
-       */
-      defaultValue?: {
-        [k: string]: any;
-      };
-      /**
-       * 字段描述
-       */
-      description?: string;
-      /**
-       * 是否是模板
-       */
-      isTemplate?: boolean;
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title?: string;
-      /**
-       * 字段的占位字符
-       */
-      placeholder?: string;
-      /**
-       * 是否是必须的字段
-       */
-      required?: boolean;
-      /**
-       * 字段校验规则
-       */
-      rules?: {}[];
-      /**
-       * 字段类型
-       */
-      type?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段所属分类数组，最顶层在第一个元素
-       */
-      categories: ({
-        /**
-         * 描述
-         */
-        description?: string;
-        /**
-         * 标题
-         */
-        title?: string;
-        /**
-         * 父类别
-         */
-        parent?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 标题
-         */
-        title: string;
-      })[];
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 是否是必须的字段
-       */
-      required: boolean;
-      /**
-       * 字段类型
-       */
-      type: string;
-    };
-  })[];
-  /**
-   * 描述
-   */
-  description?: string;
-  /**
-   * 调查者，可以能有多人
-   */
-  inspectors?: string[];
-  /**
-   * 所属命名空间
-   */
-  ns?: string;
-  /**
-   * 被调查人
-   */
-  respondent?: string;
-  /**
-   * 得分
-   */
-  score?: number;
-}
-
-export type PaperworkCreateDoc = {
-  /**
-   * 答案
-   */
-  answers?: ({
-    /**
-     * 字段 key
-     */
-    key?: string;
-    /**
-     * 表单字段标题
-     */
-    title: string;
-    /**
-     * 备注
-     */
-    remark?: string;
-    /**
-     * 值
-     */
-    value: {
-      [k: string]: any;
-    };
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 字段
-     */
-    field: {
-      /**
-       * 表单字段的默认值
-       */
-      defaultValue?: {
-        [k: string]: any;
-      };
-      /**
-       * 字段描述
-       */
-      description?: string;
-      /**
-       * 是否是模板
-       */
-      isTemplate?: boolean;
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title?: string;
-      /**
-       * 字段的占位字符
-       */
-      placeholder?: string;
-      /**
-       * 是否是必须的字段
-       */
-      required?: boolean;
-      /**
-       * 字段校验规则
-       */
-      rules?: {}[];
-      /**
-       * 字段类型
-       */
-      type?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段所属分类数组，最顶层在第一个元素
-       */
-      categories: ({
-        /**
-         * 描述
-         */
-        description?: string;
-        /**
-         * 标题
-         */
-        title?: string;
-        /**
-         * 父类别
-         */
-        parent?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 标题
-         */
-        title: string;
-      })[];
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 是否是必须的字段
-       */
-      required: boolean;
-      /**
-       * 字段类型
-       */
-      type: string;
-    };
-  })[];
-  /**
-   * 描述
-   */
-  description?: string;
-  /**
-   * 调查者，可以能有多人
-   */
-  inspectors?: string[];
-  /**
-   * 所属命名空间
-   */
-  ns?: string;
-  /**
-   * 被调查人
-   */
-  respondent?: string;
-  /**
-   * 得分
-   */
-  score?: number;
-} & {
-  /**
-   * 答案
-   */
-  answers: ({
-    /**
-     * 字段 key
-     */
-    key?: string;
-    /**
-     * 表单字段标题
-     */
-    title: string;
-    /**
-     * 备注
-     */
-    remark?: string;
-    /**
-     * 值
-     */
-    value: {
-      [k: string]: any;
-    };
-  } & {
-    /**
-     * field id
-     */
-    field?: string;
-  })[];
-  /**
-   * 调查者，可以能有多人
-   */
-  inspectors: string[];
-};
-
-export type Paperwork = {
-  /**
-   * 答案
-   */
-  answers?: ({
-    /**
-     * 字段 key
-     */
-    key?: string;
-    /**
-     * 表单字段标题
-     */
-    title: string;
-    /**
-     * 备注
-     */
-    remark?: string;
-    /**
-     * 值
-     */
-    value: {
-      [k: string]: any;
-    };
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 字段
-     */
-    field: {
-      /**
-       * 表单字段的默认值
-       */
-      defaultValue?: {
-        [k: string]: any;
-      };
-      /**
-       * 字段描述
-       */
-      description?: string;
-      /**
-       * 是否是模板
-       */
-      isTemplate?: boolean;
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title?: string;
-      /**
-       * 字段的占位字符
-       */
-      placeholder?: string;
-      /**
-       * 是否是必须的字段
-       */
-      required?: boolean;
-      /**
-       * 字段校验规则
-       */
-      rules?: {}[];
-      /**
-       * 字段类型
-       */
-      type?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段所属分类数组，最顶层在第一个元素
-       */
-      categories: ({
-        /**
-         * 描述
-         */
-        description?: string;
-        /**
-         * 标题
-         */
-        title?: string;
-        /**
-         * 父类别
-         */
-        parent?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 标题
-         */
-        title: string;
-      })[];
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 是否是必须的字段
-       */
-      required: boolean;
-      /**
-       * 字段类型
-       */
-      type: string;
-    };
-  })[];
-  /**
-   * 描述
-   */
-  description?: string;
-  /**
-   * 调查者，可以能有多人
-   */
-  inspectors?: string[];
-  /**
-   * 所属命名空间
-   */
-  ns?: string;
-  /**
-   * 被调查人
-   */
-  respondent?: string;
-  /**
-   * 得分
-   */
-  score?: number;
-} & {
-  /**
-   * mongodb id
-   */
-  id: string;
-  updateAt?: Date;
-  updateBy?: string;
-  createAt?: Date;
-  createBy?: string;
-} & {
-  /**
-   * 答案
-   */
-  answers: ({
-    /**
-     * 字段 key
-     */
-    key?: string;
-    /**
-     * 表单字段标题
-     */
-    title: string;
-    /**
-     * 备注
-     */
-    remark?: string;
-    /**
-     * 值
-     */
-    value: {
-      [k: string]: any;
-    };
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 字段
-     */
-    field: {
-      /**
-       * 表单字段的默认值
-       */
-      defaultValue?: {
-        [k: string]: any;
-      };
-      /**
-       * 字段描述
-       */
-      description?: string;
-      /**
-       * 是否是模板
-       */
-      isTemplate?: boolean;
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title?: string;
-      /**
-       * 字段的占位字符
-       */
-      placeholder?: string;
-      /**
-       * 是否是必须的字段
-       */
-      required?: boolean;
-      /**
-       * 字段校验规则
-       */
-      rules?: {}[];
-      /**
-       * 字段类型
-       */
-      type?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段所属分类数组，最顶层在第一个元素
-       */
-      categories: ({
-        /**
-         * 描述
-         */
-        description?: string;
-        /**
-         * 标题
-         */
-        title?: string;
-        /**
-         * 父类别
-         */
-        parent?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 标题
-         */
-        title: string;
-      })[];
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 是否是必须的字段
-       */
-      required: boolean;
-      /**
-       * 字段类型
-       */
-      type: string;
-    };
-  })[];
-  /**
-   * 调查者，可以能有多人
-   */
-  inspectors: string[];
-};
-
-/**
- * Count of answer aggregation
- */
-export interface AnswersCount {
-  /**
-   * id of count group
-   */
-  id?: string;
-  /**
-   * 所属分类
-   */
-  category?: {
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 标题
-     */
-    title?: string;
-    /**
-     * 父类别
-     */
-    parent?: string;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 标题
-     */
-    title: string;
-  };
-  /**
-   * Group of date
-   */
-  createAt?: {
-    /**
-     * day of date
-     */
-    day?: string;
-    /**
-     * week of date
-     */
-    week?: string;
-    /**
-     * month of date
-     */
-    month?: string;
-    /**
-     * year of date
-     */
-    year?: string;
-  };
-  /**
-   * 字段 id
-   */
-  field?: string;
-  /**
-   * 调查者
-   */
-  inspector?: string;
-  /**
-   * 被调查人
-   */
-  respondent?: string;
-  /**
-   * 所属表单
-   */
-  sheet?: {
-    /**
-     * 关闭时间
-     */
-    closeAt?: Date;
-    /**
-     * 最后增加答卷的时间
-     */
-    addPaperworkAt?: Date;
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 行业
-     */
-    industry?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
-    /**
-     * 标签
-     */
-    labels?: string[];
-    /**
-     * logo
-     */
-    logo?: string;
-    /**
-     * 名称
-     */
-    name?: string;
-    /**
-     * 所属命名空间
-     */
-    ns?: string;
-    /**
-     * 拥有者
-     */
-    owner?: string;
-    refs?: {
-      /**
-       * 资源在第三方的 origin id
-       */
-      oid: string;
-      /**
-       * 来源
-       */
-      source: string;
-      /**
-       * 名称
-       */
-      name?: string;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 类型
-       */
-      type?: string;
-      /**
-       * 唯一地址
-       */
-      uri?: string;
-    }[];
-    /**
-     * 别名
-     */
-    slug?: string;
-    /**
-     * 状态
-     */
-    state?: "OPEN" | "CLOSED";
-    /**
-     * 文档摘要，可以用于简介或者目录说明等
-     */
-    summary?: string;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 字段
-     */
-    fields: ({
-      /**
-       * 表单字段的默认值
-       */
-      defaultValue?: {
-        [k: string]: any;
-      };
-      /**
-       * 字段描述
-       */
-      description?: string;
-      /**
-       * 是否是模板
-       */
-      isTemplate?: boolean;
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title?: string;
-      /**
-       * 字段的占位字符
-       */
-      placeholder?: string;
-      /**
-       * 是否是必须的字段
-       */
-      required?: boolean;
-      /**
-       * 字段校验规则
-       */
-      rules?: {}[];
-      /**
-       * 字段类型
-       */
-      type?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段所属分类数组，最顶层在第一个元素
-       */
-      categories: ({
-        /**
-         * 描述
-         */
-        description?: string;
-        /**
-         * 标题
-         */
-        title?: string;
-        /**
-         * 父类别
-         */
-        parent?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 标题
-         */
-        title: string;
-      })[];
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 是否是必须的字段
-       */
-      required: boolean;
-      /**
-       * 字段类型
-       */
-      type: string;
-    })[];
-    /**
-     * 标签
-     */
-    labels: string[];
-    /**
-     * 名称
-     */
-    name: string;
-    refs: {
-      /**
-       * 资源在第三方的 origin id
-       */
-      oid: string;
-      /**
-       * 来源
-       */
-      source: string;
-      /**
-       * 名称
-       */
-      name?: string;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 类型
-       */
-      type?: string;
-      /**
-       * 唯一地址
-       */
-      uri?: string;
-    }[];
-    /**
-     * 状态
-     */
-    state: "OPEN" | "CLOSED";
-    /**
-     * 拥有者
-     */
-    owner: string;
-  };
-  value?: any;
-  /**
-   * 计数
-   */
-  count?: number;
-}
-
-/**
- * Count of sheet aggregation
- */
-export interface SheetsCount {
-  /**
-   * id of count group
-   */
-  id?: string;
-  /**
-   * Group of date
-   */
-  createAt?: {
-    /**
-     * day of date
-     */
-    day?: string;
-    /**
-     * week of date
-     */
-    week?: string;
-    /**
-     * month of date
-     */
-    month?: string;
-    /**
-     * year of date
-     */
-    year?: string;
-  };
-  /**
-   * 标签
-   */
-  labels?: string;
-  /**
-   * 行业
-   */
-  industry?: string;
-  /**
-   * 所属命名空间
-   */
-  ns?: string;
-  /**
-   * 计数
-   */
-  count?: number;
-}
-
-/**
- * Count of paperwork aggregation
- */
-export interface PaperworksCount {
-  /**
-   * id of count group
-   */
-  id?: string;
-  /**
-   * Group of date
-   */
-  createAt?: {
-    /**
-     * day of date
-     */
-    day?: string;
-    /**
-     * week of date
-     */
-    week?: string;
-    /**
-     * month of date
-     */
-    month?: string;
-    /**
-     * year of date
-     */
-    year?: string;
-  };
-  /**
-   * 调查者
-   */
-  inspector?: string;
-  /**
-   * 所属命名空间
-   */
-  ns?: string;
-  /**
-   * 被调查人
-   */
-  respondent?: string;
-  /**
-   * 所属表单
-   */
-  sheet?: {
-    /**
-     * 关闭时间
-     */
-    closeAt?: Date;
-    /**
-     * 最后增加答卷的时间
-     */
-    addPaperworkAt?: Date;
-    /**
-     * 描述
-     */
-    description?: string;
-    /**
-     * 行业
-     */
-    industry?: string;
-    /**
-     * 是否是模板
-     */
-    isTemplate?: boolean;
-    /**
-     * 标签
-     */
-    labels?: string[];
-    /**
-     * logo
-     */
-    logo?: string;
-    /**
-     * 名称
-     */
-    name?: string;
-    /**
-     * 所属命名空间
-     */
-    ns?: string;
-    /**
-     * 拥有者
-     */
-    owner?: string;
-    refs?: {
-      /**
-       * 资源在第三方的 origin id
-       */
-      oid: string;
-      /**
-       * 来源
-       */
-      source: string;
-      /**
-       * 名称
-       */
-      name?: string;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 类型
-       */
-      type?: string;
-      /**
-       * 唯一地址
-       */
-      uri?: string;
-    }[];
-    /**
-     * 别名
-     */
-    slug?: string;
-    /**
-     * 状态
-     */
-    state?: "OPEN" | "CLOSED";
-    /**
-     * 文档摘要，可以用于简介或者目录说明等
-     */
-    summary?: string;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 字段
-     */
-    fields: ({
-      /**
-       * 表单字段的默认值
-       */
-      defaultValue?: {
-        [k: string]: any;
-      };
-      /**
-       * 字段描述
-       */
-      description?: string;
-      /**
-       * 是否是模板
-       */
-      isTemplate?: boolean;
-      /**
-       * 字段 key
-       */
-      key?: string;
-      /**
-       * 表单字段标题
-       */
-      title?: string;
-      /**
-       * 字段的占位字符
-       */
-      placeholder?: string;
-      /**
-       * 是否是必须的字段
-       */
-      required?: boolean;
-      /**
-       * 字段校验规则
-       */
-      rules?: {}[];
-      /**
-       * 字段类型
-       */
-      type?: string;
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 字段所属分类数组，最顶层在第一个元素
-       */
-      categories: ({
-        /**
-         * 描述
-         */
-        description?: string;
-        /**
-         * 标题
-         */
-        title?: string;
-        /**
-         * 父类别
-         */
-        parent?: string;
-      } & {
-        /**
-         * mongodb id
-         */
-        id: string;
-        updateAt?: Date;
-        updateBy?: string;
-        createAt?: Date;
-        createBy?: string;
-      } & {
-        /**
-         * 标题
-         */
-        title: string;
-      })[];
-      /**
-       * 表单字段标题
-       */
-      title: string;
-      /**
-       * 是否是必须的字段
-       */
-      required: boolean;
-      /**
-       * 字段类型
-       */
-      type: string;
-    })[];
-    /**
-     * 标签
-     */
-    labels: string[];
-    /**
-     * 名称
-     */
-    name: string;
-    refs: {
-      /**
-       * 资源在第三方的 origin id
-       */
-      oid: string;
-      /**
-       * 来源
-       */
-      source: string;
-      /**
-       * 名称
-       */
-      name?: string;
-      /**
-       * 描述
-       */
-      description?: string;
-      /**
-       * 类型
-       */
-      type?: string;
-      /**
-       * 唯一地址
-       */
-      uri?: string;
-    }[];
-    /**
-     * 状态
-     */
-    state: "OPEN" | "CLOSED";
-    /**
-     * 拥有者
-     */
-    owner: string;
-  };
-  /**
-   * 计数
-   */
-  count?: number;
-}
 
 export interface MongoDefault {
   /**
