@@ -277,4 +277,24 @@ export default class SDK {
       });
     },
   };
+  /**
+   * person's methods
+   */
+  person = {
+    /**
+     * List person
+     *
+     * @param {ListPersonRequest} req listPerson request
+     * @returns {Promise<ListPersonResponse>} A paged array of person
+     */
+    listPerson: req => {
+      const { query } = req || {};
+
+      return fetch(`${this.base}/person`, {
+        method: "GET",
+        query,
+        headers: { Authorization: this.auth },
+      });
+    },
+  };
 }

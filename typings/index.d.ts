@@ -8,6 +8,7 @@ declare class SDK {
   room: RoomAPI;
   meeting: MeetingAPI;
   door: DoorAPI;
+  person: PersonAPI;
 }
 
 export interface Options {
@@ -76,6 +77,12 @@ export interface DoorAPI {
    * List doors
    */
   listDoors(req: ListDoorsRequest): Promise<ListDoorsResponse>;
+}
+export interface PersonAPI {
+  /**
+   * List person
+   */
+  listPerson(req: ListPersonRequest): Promise<ListPersonResponse>;
 }
 
 export interface ListRoomsRequest {
@@ -591,6 +598,23 @@ export interface ListMeetingsResponse {
        * 用户 id
        */
       user?: string;
+      /**
+       * 海康资源
+       */
+      hik?: {
+        /**
+         * 海康人员 id
+         */
+        personId?: string;
+        /**
+         * 照片 uri
+         */
+        picUri?: string;
+        /**
+         * 海康资源编号
+         */
+        serverIndexCode?: string;
+      };
     } & {
       /**
        * mongodb id
@@ -797,6 +821,23 @@ export interface CreateMeetingResponse {
        * 用户 id
        */
       user?: string;
+      /**
+       * 海康资源
+       */
+      hik?: {
+        /**
+         * 海康人员 id
+         */
+        personId?: string;
+        /**
+         * 照片 uri
+         */
+        picUri?: string;
+        /**
+         * 海康资源编号
+         */
+        serverIndexCode?: string;
+      };
     } & {
       /**
        * mongodb id
@@ -959,6 +1000,23 @@ export interface GetMeetingResponse {
        * 用户 id
        */
       user?: string;
+      /**
+       * 海康资源
+       */
+      hik?: {
+        /**
+         * 海康人员 id
+         */
+        personId?: string;
+        /**
+         * 照片 uri
+         */
+        picUri?: string;
+        /**
+         * 海康资源编号
+         */
+        serverIndexCode?: string;
+      };
     } & {
       /**
        * mongodb id
@@ -1154,6 +1212,23 @@ export interface UpdateMeetingResponse {
        * 用户 id
        */
       user?: string;
+      /**
+       * 海康资源
+       */
+      hik?: {
+        /**
+         * 海康人员 id
+         */
+        personId?: string;
+        /**
+         * 照片 uri
+         */
+        picUri?: string;
+        /**
+         * 海康资源编号
+         */
+        serverIndexCode?: string;
+      };
     } & {
       /**
        * mongodb id
@@ -1319,6 +1394,23 @@ export interface CloseMeetingResponse {
        * 用户 id
        */
       user?: string;
+      /**
+       * 海康资源
+       */
+      hik?: {
+        /**
+         * 海康人员 id
+         */
+        personId?: string;
+        /**
+         * 照片 uri
+         */
+        picUri?: string;
+        /**
+         * 海康资源编号
+         */
+        serverIndexCode?: string;
+      };
     } & {
       /**
        * mongodb id
@@ -1437,6 +1529,23 @@ export interface AddMemberRequest {
      * 用户 id
      */
     user?: string;
+    /**
+     * 海康资源
+     */
+    hik?: {
+      /**
+       * 海康人员 id
+       */
+      personId?: string;
+      /**
+       * 照片 uri
+       */
+      picUri?: string;
+      /**
+       * 海康资源编号
+       */
+      serverIndexCode?: string;
+    };
   };
 }
 export interface AddMemberResponse {
@@ -1464,6 +1573,23 @@ export interface AddMemberResponse {
      * 用户 id
      */
     user?: string;
+    /**
+     * 海康资源
+     */
+    hik?: {
+      /**
+       * 海康人员 id
+       */
+      personId?: string;
+      /**
+       * 照片 uri
+       */
+      picUri?: string;
+      /**
+       * 海康资源编号
+       */
+      serverIndexCode?: string;
+    };
   } & {
     /**
      * mongodb id
@@ -1512,6 +1638,76 @@ export interface ListDoorsResponse {
      * 所属区域
      */
     regionName?: string;
+  }[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface ListPersonRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+  };
+}
+export interface ListPersonResponse {
+  body: {
+    /**
+     * 人员 id
+     */
+    personId?: string;
+    /**
+     * 人员姓名
+     */
+    personName?: string;
+    /**
+     * 性别
+     */
+    gender?: number;
+    /**
+     * 组织编号
+     */
+    orgIndexCode?: string;
+    /**
+     * 手机号
+     */
+    phone?: string;
+    /**
+     * 工号
+     */
+    jobNo?: string;
+    /**
+     * 身份类别
+     */
+    certificateType?: number;
+    /**
+     * 证件号
+     */
+    certificateNo?: string;
+    /**
+     * 部门路径
+     */
+    orgPath?: string;
+    /**
+     * 部门名称路径
+     */
+    orgPathName?: string;
+    /**
+     * 照片
+     */
+    personPhoto?: {
+      /**
+       * 照片 id
+       */
+      personPhotoIndexCode?: string;
+      /**
+       * 照片 uri
+       */
+      picUri?: string;
+      /**
+       * 海康资源编号
+       */
+      serverIndexCode?: string;
+    }[];
   }[];
   headers: {
     "x-total-count"?: number;
@@ -1804,6 +2000,23 @@ export interface MemberDoc {
    * 用户 id
    */
   user?: string;
+  /**
+   * 海康资源
+   */
+  hik?: {
+    /**
+     * 海康人员 id
+     */
+    personId?: string;
+    /**
+     * 照片 uri
+     */
+    picUri?: string;
+    /**
+     * 海康资源编号
+     */
+    serverIndexCode?: string;
+  };
 }
 
 /**
@@ -1830,6 +2043,23 @@ export type MemberCreateDoc = {
    * 用户 id
    */
   user?: string;
+  /**
+   * 海康资源
+   */
+  hik?: {
+    /**
+     * 海康人员 id
+     */
+    personId?: string;
+    /**
+     * 照片 uri
+     */
+    picUri?: string;
+    /**
+     * 海康资源编号
+     */
+    serverIndexCode?: string;
+  };
 };
 
 /**
@@ -1856,6 +2086,23 @@ export type Member = {
    * 用户 id
    */
   user?: string;
+  /**
+   * 海康资源
+   */
+  hik?: {
+    /**
+     * 海康人员 id
+     */
+    personId?: string;
+    /**
+     * 照片 uri
+     */
+    picUri?: string;
+    /**
+     * 海康资源编号
+     */
+    serverIndexCode?: string;
+  };
 } & {
   /**
    * mongodb id
@@ -2015,6 +2262,23 @@ export type Meeting = {
      * 用户 id
      */
     user?: string;
+    /**
+     * 海康资源
+     */
+    hik?: {
+      /**
+       * 海康人员 id
+       */
+      personId?: string;
+      /**
+       * 照片 uri
+       */
+      picUri?: string;
+      /**
+       * 海康资源编号
+       */
+      serverIndexCode?: string;
+    };
   } & {
     /**
      * mongodb id
@@ -2106,6 +2370,69 @@ export type Meeting = {
    */
   state: "OPEN" | "CLOSED";
 };
+
+/**
+ * 警察
+ */
+export interface Person {
+  /**
+   * 人员 id
+   */
+  personId?: string;
+  /**
+   * 人员姓名
+   */
+  personName?: string;
+  /**
+   * 性别
+   */
+  gender?: number;
+  /**
+   * 组织编号
+   */
+  orgIndexCode?: string;
+  /**
+   * 手机号
+   */
+  phone?: string;
+  /**
+   * 工号
+   */
+  jobNo?: string;
+  /**
+   * 身份类别
+   */
+  certificateType?: number;
+  /**
+   * 证件号
+   */
+  certificateNo?: string;
+  /**
+   * 部门路径
+   */
+  orgPath?: string;
+  /**
+   * 部门名称路径
+   */
+  orgPathName?: string;
+  /**
+   * 照片
+   */
+  personPhoto?: {
+    /**
+     * 照片 id
+     */
+    personPhotoIndexCode?: string;
+    /**
+     * 照片 uri
+     */
+    picUri?: string;
+    /**
+     * 海康资源编号
+     */
+    serverIndexCode?: string;
+  }[];
+}
 
 export interface MongoDefault {
   /**
