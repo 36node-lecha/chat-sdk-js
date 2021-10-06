@@ -751,7 +751,59 @@ export interface CreateMeetingRequest {
     /**
      * 成员
      */
-    members?: string[];
+    members?: ({
+      /**
+       * 头像
+       */
+      avatar?: string;
+      /**
+       * 名称
+       */
+      name?: string;
+      /**
+       * 角色
+       */
+      roles?: ("ADMIN" | "ARBITER")[];
+      /**
+       * 成员类型
+       */
+      type?: string;
+      /**
+       * 用户 id
+       */
+      user?: string;
+      /**
+       * 海康资源
+       */
+      hik?: {
+        /**
+         * 海康人员 id
+         */
+        personId?: string;
+        /**
+         * 照片 uri
+         */
+        picUri?: string;
+        /**
+         * 海康资源编号
+         */
+        serverIndexCode?: string;
+      };
+    } & {
+      /**
+       * mongodb id
+       */
+      id: string;
+      updateAt?: Date;
+      updateBy?: string;
+      createAt?: Date;
+      createBy?: string;
+    } & {
+      /**
+       * 角色
+       */
+      roles: ("ADMIN" | "ARBITER")[];
+    })[];
   };
 }
 export interface CreateMeetingResponse {
@@ -2193,7 +2245,59 @@ export type MeetingCreateDoc = {
   /**
    * 成员
    */
-  members?: string[];
+  members?: ({
+    /**
+     * 头像
+     */
+    avatar?: string;
+    /**
+     * 名称
+     */
+    name?: string;
+    /**
+     * 角色
+     */
+    roles?: ("ADMIN" | "ARBITER")[];
+    /**
+     * 成员类型
+     */
+    type?: string;
+    /**
+     * 用户 id
+     */
+    user?: string;
+    /**
+     * 海康资源
+     */
+    hik?: {
+      /**
+       * 海康人员 id
+       */
+      personId?: string;
+      /**
+       * 照片 uri
+       */
+      picUri?: string;
+      /**
+       * 海康资源编号
+       */
+      serverIndexCode?: string;
+    };
+  } & {
+    /**
+     * mongodb id
+     */
+    id: string;
+    updateAt?: Date;
+    updateBy?: string;
+    createAt?: Date;
+    createBy?: string;
+  } & {
+    /**
+     * 角色
+     */
+    roles: ("ADMIN" | "ARBITER")[];
+  })[];
 };
 
 /**
