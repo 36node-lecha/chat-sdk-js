@@ -257,4 +257,24 @@ export default class SDK {
       });
     },
   };
+  /**
+   * door's methods
+   */
+  door = {
+    /**
+     * List doors
+     *
+     * @param {ListDoorsRequest} req listDoors request
+     * @returns {Promise<ListDoorsResponse>} A paged array of doors
+     */
+    listDoors: req => {
+      const { query } = req || {};
+
+      return fetch(`${this.base}/doors`, {
+        method: "GET",
+        query,
+        headers: { Authorization: this.auth },
+      });
+    },
+  };
 }

@@ -7,6 +7,7 @@ declare class SDK {
 
   room: RoomAPI;
   meeting: MeetingAPI;
+  door: DoorAPI;
 }
 
 export interface Options {
@@ -70,6 +71,12 @@ export interface MeetingAPI {
    */
   removeMember(req: RemoveMemberRequest): Promise<void>;
 }
+export interface DoorAPI {
+  /**
+   * List doors
+   */
+  listDoors(req: ListDoorsRequest): Promise<ListDoorsResponse>;
+}
 
 export interface ListRoomsRequest {
   query?: {
@@ -109,6 +116,35 @@ export interface ListRoomsResponse {
      * 心电监护仪 id
      */
     ecgMonitor?: string;
+    /**
+     * 门禁设备 id
+     */
+    door?: string;
+    /**
+     * 刷脸设备 id
+     */
+    faceDevice?: string;
+    /**
+     * 位置信息
+     */
+    location?: {
+      /**
+       * 横坐标
+       */
+      x?: number;
+      /**
+       * 纵坐标
+       */
+      y?: number;
+      /**
+       * 高度坐标
+       */
+      z?: number;
+      /**
+       * 楼层
+       */
+      floor?: number;
+    };
   } & {
     /**
      * mongodb id
@@ -156,6 +192,35 @@ export interface CreateRoomRequest {
      * 心电监护仪 id
      */
     ecgMonitor?: string;
+    /**
+     * 门禁设备 id
+     */
+    door?: string;
+    /**
+     * 刷脸设备 id
+     */
+    faceDevice?: string;
+    /**
+     * 位置信息
+     */
+    location?: {
+      /**
+       * 横坐标
+       */
+      x?: number;
+      /**
+       * 纵坐标
+       */
+      y?: number;
+      /**
+       * 高度坐标
+       */
+      z?: number;
+      /**
+       * 楼层
+       */
+      floor?: number;
+    };
   };
 }
 export interface CreateRoomResponse {
@@ -191,6 +256,35 @@ export interface CreateRoomResponse {
      * 心电监护仪 id
      */
     ecgMonitor?: string;
+    /**
+     * 门禁设备 id
+     */
+    door?: string;
+    /**
+     * 刷脸设备 id
+     */
+    faceDevice?: string;
+    /**
+     * 位置信息
+     */
+    location?: {
+      /**
+       * 横坐标
+       */
+      x?: number;
+      /**
+       * 纵坐标
+       */
+      y?: number;
+      /**
+       * 高度坐标
+       */
+      z?: number;
+      /**
+       * 楼层
+       */
+      floor?: number;
+    };
   } & {
     /**
      * mongodb id
@@ -238,6 +332,35 @@ export interface GetRoomResponse {
      * 心电监护仪 id
      */
     ecgMonitor?: string;
+    /**
+     * 门禁设备 id
+     */
+    door?: string;
+    /**
+     * 刷脸设备 id
+     */
+    faceDevice?: string;
+    /**
+     * 位置信息
+     */
+    location?: {
+      /**
+       * 横坐标
+       */
+      x?: number;
+      /**
+       * 纵坐标
+       */
+      y?: number;
+      /**
+       * 高度坐标
+       */
+      z?: number;
+      /**
+       * 楼层
+       */
+      floor?: number;
+    };
   } & {
     /**
      * mongodb id
@@ -283,6 +406,35 @@ export interface UpdateRoomRequest {
      * 心电监护仪 id
      */
     ecgMonitor?: string;
+    /**
+     * 门禁设备 id
+     */
+    door?: string;
+    /**
+     * 刷脸设备 id
+     */
+    faceDevice?: string;
+    /**
+     * 位置信息
+     */
+    location?: {
+      /**
+       * 横坐标
+       */
+      x?: number;
+      /**
+       * 纵坐标
+       */
+      y?: number;
+      /**
+       * 高度坐标
+       */
+      z?: number;
+      /**
+       * 楼层
+       */
+      floor?: number;
+    };
   };
 }
 export interface UpdateRoomResponse {
@@ -318,6 +470,35 @@ export interface UpdateRoomResponse {
      * 心电监护仪 id
      */
     ecgMonitor?: string;
+    /**
+     * 门禁设备 id
+     */
+    door?: string;
+    /**
+     * 刷脸设备 id
+     */
+    faceDevice?: string;
+    /**
+     * 位置信息
+     */
+    location?: {
+      /**
+       * 横坐标
+       */
+      x?: number;
+      /**
+       * 纵坐标
+       */
+      y?: number;
+      /**
+       * 高度坐标
+       */
+      z?: number;
+      /**
+       * 楼层
+       */
+      floor?: number;
+    };
   } & {
     /**
      * mongodb id
@@ -338,6 +519,12 @@ export interface ListMeetingsRequest {
     _offset?: number;
     _sort?: string;
     _select?: string[];
+    startAt_lt?: string;
+    startAt_gt?: string;
+    closeAt_lt?: string;
+    closeAt_gt?: string;
+    state?: "OPEN" | "CLOSED";
+    title_like?: string;
   };
 }
 export interface ListMeetingsResponse {
@@ -358,6 +545,14 @@ export interface ListMeetingsResponse {
      * 会议状态
      */
     state?: "OPEN" | "CLOSED";
+    /**
+     * 会议开始时间
+     */
+    startAt?: Date;
+    /**
+     * 会议关闭时间
+     */
+    closeAt?: Date;
     /**
      * 图标
      */
@@ -443,6 +638,35 @@ export interface ListMeetingsResponse {
        * 心电监护仪 id
        */
       ecgMonitor?: string;
+      /**
+       * 门禁设备 id
+       */
+      door?: string;
+      /**
+       * 刷脸设备 id
+       */
+      faceDevice?: string;
+      /**
+       * 位置信息
+       */
+      location?: {
+        /**
+         * 横坐标
+         */
+        x?: number;
+        /**
+         * 纵坐标
+         */
+        y?: number;
+        /**
+         * 高度坐标
+         */
+        z?: number;
+        /**
+         * 楼层
+         */
+        floor?: number;
+      };
     } & {
       /**
        * mongodb id
@@ -457,14 +681,6 @@ export interface ListMeetingsResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
-    /**
-     * 会议开始时间
-     */
-    startAt?: Date;
-    /**
-     * 会议关闭时间
-     */
-    closeAt?: Date;
   })[];
   headers: {
     "x-total-count"?: number;
@@ -491,6 +707,14 @@ export interface CreateMeetingRequest {
      * 会议状态
      */
     state?: "OPEN" | "CLOSED";
+    /**
+     * 会议开始时间
+     */
+    startAt?: Date;
+    /**
+     * 会议关闭时间
+     */
+    closeAt?: Date;
     /**
      * 图标
      */
@@ -528,6 +752,14 @@ export interface CreateMeetingResponse {
      */
     state?: "OPEN" | "CLOSED";
     /**
+     * 会议开始时间
+     */
+    startAt?: Date;
+    /**
+     * 会议关闭时间
+     */
+    closeAt?: Date;
+    /**
      * 图标
      */
     thumbnail?: string;
@@ -612,6 +844,35 @@ export interface CreateMeetingResponse {
        * 心电监护仪 id
        */
       ecgMonitor?: string;
+      /**
+       * 门禁设备 id
+       */
+      door?: string;
+      /**
+       * 刷脸设备 id
+       */
+      faceDevice?: string;
+      /**
+       * 位置信息
+       */
+      location?: {
+        /**
+         * 横坐标
+         */
+        x?: number;
+        /**
+         * 纵坐标
+         */
+        y?: number;
+        /**
+         * 高度坐标
+         */
+        z?: number;
+        /**
+         * 楼层
+         */
+        floor?: number;
+      };
     } & {
       /**
        * mongodb id
@@ -626,14 +887,6 @@ export interface CreateMeetingResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
-    /**
-     * 会议开始时间
-     */
-    startAt?: Date;
-    /**
-     * 会议关闭时间
-     */
-    closeAt?: Date;
   };
 }
 export interface GetMeetingRequest {
@@ -661,6 +914,14 @@ export interface GetMeetingResponse {
      */
     state?: "OPEN" | "CLOSED";
     /**
+     * 会议开始时间
+     */
+    startAt?: Date;
+    /**
+     * 会议关闭时间
+     */
+    closeAt?: Date;
+    /**
      * 图标
      */
     thumbnail?: string;
@@ -745,6 +1006,35 @@ export interface GetMeetingResponse {
        * 心电监护仪 id
        */
       ecgMonitor?: string;
+      /**
+       * 门禁设备 id
+       */
+      door?: string;
+      /**
+       * 刷脸设备 id
+       */
+      faceDevice?: string;
+      /**
+       * 位置信息
+       */
+      location?: {
+        /**
+         * 横坐标
+         */
+        x?: number;
+        /**
+         * 纵坐标
+         */
+        y?: number;
+        /**
+         * 高度坐标
+         */
+        z?: number;
+        /**
+         * 楼层
+         */
+        floor?: number;
+      };
     } & {
       /**
        * mongodb id
@@ -759,14 +1049,6 @@ export interface GetMeetingResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
-    /**
-     * 会议开始时间
-     */
-    startAt?: Date;
-    /**
-     * 会议关闭时间
-     */
-    closeAt?: Date;
   };
 }
 export interface UpdateMeetingRequest {
@@ -791,6 +1073,14 @@ export interface UpdateMeetingRequest {
      * 会议状态
      */
     state?: "OPEN" | "CLOSED";
+    /**
+     * 会议开始时间
+     */
+    startAt?: Date;
+    /**
+     * 会议关闭时间
+     */
+    closeAt?: Date;
     /**
      * 图标
      */
@@ -819,6 +1109,14 @@ export interface UpdateMeetingResponse {
      */
     state?: "OPEN" | "CLOSED";
     /**
+     * 会议开始时间
+     */
+    startAt?: Date;
+    /**
+     * 会议关闭时间
+     */
+    closeAt?: Date;
+    /**
      * 图标
      */
     thumbnail?: string;
@@ -903,6 +1201,35 @@ export interface UpdateMeetingResponse {
        * 心电监护仪 id
        */
       ecgMonitor?: string;
+      /**
+       * 门禁设备 id
+       */
+      door?: string;
+      /**
+       * 刷脸设备 id
+       */
+      faceDevice?: string;
+      /**
+       * 位置信息
+       */
+      location?: {
+        /**
+         * 横坐标
+         */
+        x?: number;
+        /**
+         * 纵坐标
+         */
+        y?: number;
+        /**
+         * 高度坐标
+         */
+        z?: number;
+        /**
+         * 楼层
+         */
+        floor?: number;
+      };
     } & {
       /**
        * mongodb id
@@ -917,14 +1244,6 @@ export interface UpdateMeetingResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
-    /**
-     * 会议开始时间
-     */
-    startAt?: Date;
-    /**
-     * 会议关闭时间
-     */
-    closeAt?: Date;
   };
 }
 export interface DeleteMeetingRequest {
@@ -955,6 +1274,14 @@ export interface CloseMeetingResponse {
      */
     state?: "OPEN" | "CLOSED";
     /**
+     * 会议开始时间
+     */
+    startAt?: Date;
+    /**
+     * 会议关闭时间
+     */
+    closeAt?: Date;
+    /**
      * 图标
      */
     thumbnail?: string;
@@ -1039,6 +1366,35 @@ export interface CloseMeetingResponse {
        * 心电监护仪 id
        */
       ecgMonitor?: string;
+      /**
+       * 门禁设备 id
+       */
+      door?: string;
+      /**
+       * 刷脸设备 id
+       */
+      faceDevice?: string;
+      /**
+       * 位置信息
+       */
+      location?: {
+        /**
+         * 横坐标
+         */
+        x?: number;
+        /**
+         * 纵坐标
+         */
+        y?: number;
+        /**
+         * 高度坐标
+         */
+        z?: number;
+        /**
+         * 楼层
+         */
+        floor?: number;
+      };
     } & {
       /**
        * mongodb id
@@ -1053,14 +1409,6 @@ export interface CloseMeetingResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
-    /**
-     * 会议开始时间
-     */
-    startAt?: Date;
-    /**
-     * 会议关闭时间
-     */
-    closeAt?: Date;
   };
 }
 export interface AddMemberRequest {
@@ -1136,6 +1484,39 @@ export interface RemoveMemberRequest {
   meetingId: string;
   memberId: string;
 }
+export interface ListDoorsRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+  };
+}
+export interface ListDoorsResponse {
+  body: {
+    /**
+     * 设备id
+     */
+    indexCode: string;
+    /**
+     * 通道类型
+     */
+    channelType?: string;
+    /**
+     * 编号
+     */
+    doorNo?: string;
+    /**
+     * 名称
+     */
+    name?: string;
+    /**
+     * 所属区域
+     */
+    regionName?: string;
+  }[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
 export type DateTime = Date;
 
 /**
@@ -1152,6 +1533,54 @@ export type RoomState = "OCCUPIED" | "FREE";
 export type MeetingState = "OPEN" | "CLOSED";
 
 export type MeetingRole = "ADMIN" | "ARBITER";
+
+/**
+ * 位置信息
+ */
+export interface Location {
+  /**
+   * 横坐标
+   */
+  x?: number;
+  /**
+   * 纵坐标
+   */
+  y?: number;
+  /**
+   * 高度坐标
+   */
+  z?: number;
+  /**
+   * 楼层
+   */
+  floor?: number;
+}
+
+/**
+ * Door
+ */
+export interface Door {
+  /**
+   * 设备id
+   */
+  indexCode: string;
+  /**
+   * 通道类型
+   */
+  channelType?: string;
+  /**
+   * 编号
+   */
+  doorNo?: string;
+  /**
+   * 名称
+   */
+  name?: string;
+  /**
+   * 所属区域
+   */
+  regionName?: string;
+}
 
 /**
  * Room doc
@@ -1185,6 +1614,35 @@ export interface RoomDoc {
    * 心电监护仪 id
    */
   ecgMonitor?: string;
+  /**
+   * 门禁设备 id
+   */
+  door?: string;
+  /**
+   * 刷脸设备 id
+   */
+  faceDevice?: string;
+  /**
+   * 位置信息
+   */
+  location?: {
+    /**
+     * 横坐标
+     */
+    x?: number;
+    /**
+     * 纵坐标
+     */
+    y?: number;
+    /**
+     * 高度坐标
+     */
+    z?: number;
+    /**
+     * 楼层
+     */
+    floor?: number;
+  };
 }
 
 /**
@@ -1219,6 +1677,35 @@ export type RoomCreateDoc = {
    * 心电监护仪 id
    */
   ecgMonitor?: string;
+  /**
+   * 门禁设备 id
+   */
+  door?: string;
+  /**
+   * 刷脸设备 id
+   */
+  faceDevice?: string;
+  /**
+   * 位置信息
+   */
+  location?: {
+    /**
+     * 横坐标
+     */
+    x?: number;
+    /**
+     * 纵坐标
+     */
+    y?: number;
+    /**
+     * 高度坐标
+     */
+    z?: number;
+    /**
+     * 楼层
+     */
+    floor?: number;
+  };
 };
 
 /**
@@ -1253,6 +1740,35 @@ export type Room = {
    * 心电监护仪 id
    */
   ecgMonitor?: string;
+  /**
+   * 门禁设备 id
+   */
+  door?: string;
+  /**
+   * 刷脸设备 id
+   */
+  faceDevice?: string;
+  /**
+   * 位置信息
+   */
+  location?: {
+    /**
+     * 横坐标
+     */
+    x?: number;
+    /**
+     * 纵坐标
+     */
+    y?: number;
+    /**
+     * 高度坐标
+     */
+    z?: number;
+    /**
+     * 楼层
+     */
+    floor?: number;
+  };
 } & {
   /**
    * mongodb id
@@ -1377,6 +1893,14 @@ export interface MeetingDoc {
    */
   state?: "OPEN" | "CLOSED";
   /**
+   * 会议开始时间
+   */
+  startAt?: Date;
+  /**
+   * 会议关闭时间
+   */
+  closeAt?: Date;
+  /**
    * 图标
    */
   thumbnail?: string;
@@ -1402,6 +1926,14 @@ export type MeetingCreateDoc = {
    * 会议状态
    */
   state?: "OPEN" | "CLOSED";
+  /**
+   * 会议开始时间
+   */
+  startAt?: Date;
+  /**
+   * 会议关闭时间
+   */
+  closeAt?: Date;
   /**
    * 图标
    */
@@ -1437,6 +1969,14 @@ export type Meeting = {
    * 会议状态
    */
   state?: "OPEN" | "CLOSED";
+  /**
+   * 会议开始时间
+   */
+  startAt?: Date;
+  /**
+   * 会议关闭时间
+   */
+  closeAt?: Date;
   /**
    * 图标
    */
@@ -1522,6 +2062,35 @@ export type Meeting = {
      * 心电监护仪 id
      */
     ecgMonitor?: string;
+    /**
+     * 门禁设备 id
+     */
+    door?: string;
+    /**
+     * 刷脸设备 id
+     */
+    faceDevice?: string;
+    /**
+     * 位置信息
+     */
+    location?: {
+      /**
+       * 横坐标
+       */
+      x?: number;
+      /**
+       * 纵坐标
+       */
+      y?: number;
+      /**
+       * 高度坐标
+       */
+      z?: number;
+      /**
+       * 楼层
+       */
+      floor?: number;
+    };
   } & {
     /**
      * mongodb id
@@ -1536,14 +2105,6 @@ export type Meeting = {
    * 会议状态
    */
   state: "OPEN" | "CLOSED";
-  /**
-   * 会议开始时间
-   */
-  startAt?: Date;
-  /**
-   * 会议关闭时间
-   */
-  closeAt?: Date;
 };
 
 export interface MongoDefault {
