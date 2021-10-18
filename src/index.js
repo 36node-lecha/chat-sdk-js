@@ -278,6 +278,26 @@ export default class SDK {
     },
   };
   /**
+   * camera's methods
+   */
+  camera = {
+    /**
+     * List hik cameras
+     *
+     * @param {ListCamerasRequest} req listCameras request
+     * @returns {Promise<ListCamerasResponse>} A paged array of cameras
+     */
+    listCameras: req => {
+      const { query } = req || {};
+
+      return fetch(`${this.base}/cameras`, {
+        method: "GET",
+        query,
+        headers: { Authorization: this.auth },
+      });
+    },
+  };
+  /**
    * person's methods
    */
   person = {

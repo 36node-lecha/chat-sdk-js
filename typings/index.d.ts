@@ -8,6 +8,7 @@ declare class SDK {
   room: RoomAPI;
   meeting: MeetingAPI;
   door: DoorAPI;
+  camera: CameraAPI;
   person: PersonAPI;
 }
 
@@ -78,6 +79,12 @@ export interface DoorAPI {
    */
   listDoors(req: ListDoorsRequest): Promise<ListDoorsResponse>;
 }
+export interface CameraAPI {
+  /**
+   * List hik cameras
+   */
+  listCameras(req: ListCamerasRequest): Promise<ListCamerasResponse>;
+}
 export interface PersonAPI {
   /**
    * List person
@@ -131,6 +138,19 @@ export interface ListRoomsResponse {
      * 刷脸设备 id
      */
     faceDevice?: string;
+    /**
+     * 摄像头数组
+     */
+    cameras?: {
+      /**
+       * 摄像头的标题
+       */
+      name?: string;
+      /**
+       * 摄像头在海康中的编号
+       */
+      indexCode?: string;
+    }[];
     /**
      * 位置信息
      */
@@ -208,6 +228,19 @@ export interface CreateRoomRequest {
      */
     faceDevice?: string;
     /**
+     * 摄像头数组
+     */
+    cameras?: {
+      /**
+       * 摄像头的标题
+       */
+      name?: string;
+      /**
+       * 摄像头在海康中的编号
+       */
+      indexCode?: string;
+    }[];
+    /**
      * 位置信息
      */
     location?: {
@@ -271,6 +304,19 @@ export interface CreateRoomResponse {
      * 刷脸设备 id
      */
     faceDevice?: string;
+    /**
+     * 摄像头数组
+     */
+    cameras?: {
+      /**
+       * 摄像头的标题
+       */
+      name?: string;
+      /**
+       * 摄像头在海康中的编号
+       */
+      indexCode?: string;
+    }[];
     /**
      * 位置信息
      */
@@ -348,6 +394,19 @@ export interface GetRoomResponse {
      */
     faceDevice?: string;
     /**
+     * 摄像头数组
+     */
+    cameras?: {
+      /**
+       * 摄像头的标题
+       */
+      name?: string;
+      /**
+       * 摄像头在海康中的编号
+       */
+      indexCode?: string;
+    }[];
+    /**
      * 位置信息
      */
     location?: {
@@ -422,6 +481,19 @@ export interface UpdateRoomRequest {
      */
     faceDevice?: string;
     /**
+     * 摄像头数组
+     */
+    cameras?: {
+      /**
+       * 摄像头的标题
+       */
+      name?: string;
+      /**
+       * 摄像头在海康中的编号
+       */
+      indexCode?: string;
+    }[];
+    /**
      * 位置信息
      */
     location?: {
@@ -485,6 +557,19 @@ export interface UpdateRoomResponse {
      * 刷脸设备 id
      */
     faceDevice?: string;
+    /**
+     * 摄像头数组
+     */
+    cameras?: {
+      /**
+       * 摄像头的标题
+       */
+      name?: string;
+      /**
+       * 摄像头在海康中的编号
+       */
+      indexCode?: string;
+    }[];
     /**
      * 位置信息
      */
@@ -671,6 +756,19 @@ export interface ListMeetingsResponse {
        */
       faceDevice?: string;
       /**
+       * 摄像头数组
+       */
+      cameras?: {
+        /**
+         * 摄像头的标题
+         */
+        name?: string;
+        /**
+         * 摄像头在海康中的编号
+         */
+        indexCode?: string;
+      }[];
+      /**
        * 位置信息
        */
       location?: {
@@ -705,6 +803,19 @@ export interface ListMeetingsResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
+    /**
+     * 视频流
+     */
+    streams?: {
+      /**
+       * 视频流名称
+       */
+      title?: string;
+      /**
+       * 码流
+       */
+      url?: string;
+    }[];
   })[];
   headers: {
     "x-total-count"?: number;
@@ -751,7 +862,7 @@ export interface CreateMeetingRequest {
     /**
      * 成员
      */
-    members?: ({
+    members?: {
       /**
        * 头像
        */
@@ -789,21 +900,7 @@ export interface CreateMeetingRequest {
          */
         serverIndexCode?: string;
       };
-    } & {
-      /**
-       * mongodb id
-       */
-      id: string;
-      updateAt?: Date;
-      updateBy?: string;
-      createAt?: Date;
-      createBy?: string;
-    } & {
-      /**
-       * 角色
-       */
-      roles: ("ADMIN" | "ARBITER")[];
-    })[];
+    }[];
   };
 }
 export interface CreateMeetingResponse {
@@ -946,6 +1043,19 @@ export interface CreateMeetingResponse {
        */
       faceDevice?: string;
       /**
+       * 摄像头数组
+       */
+      cameras?: {
+        /**
+         * 摄像头的标题
+         */
+        name?: string;
+        /**
+         * 摄像头在海康中的编号
+         */
+        indexCode?: string;
+      }[];
+      /**
        * 位置信息
        */
       location?: {
@@ -980,6 +1090,19 @@ export interface CreateMeetingResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
+    /**
+     * 视频流
+     */
+    streams?: {
+      /**
+       * 视频流名称
+       */
+      title?: string;
+      /**
+       * 码流
+       */
+      url?: string;
+    }[];
   };
 }
 export interface GetMeetingRequest {
@@ -1125,6 +1248,19 @@ export interface GetMeetingResponse {
        */
       faceDevice?: string;
       /**
+       * 摄像头数组
+       */
+      cameras?: {
+        /**
+         * 摄像头的标题
+         */
+        name?: string;
+        /**
+         * 摄像头在海康中的编号
+         */
+        indexCode?: string;
+      }[];
+      /**
        * 位置信息
        */
       location?: {
@@ -1159,6 +1295,19 @@ export interface GetMeetingResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
+    /**
+     * 视频流
+     */
+    streams?: {
+      /**
+       * 视频流名称
+       */
+      title?: string;
+      /**
+       * 码流
+       */
+      url?: string;
+    }[];
   };
 }
 export interface UpdateMeetingRequest {
@@ -1337,6 +1486,19 @@ export interface UpdateMeetingResponse {
        */
       faceDevice?: string;
       /**
+       * 摄像头数组
+       */
+      cameras?: {
+        /**
+         * 摄像头的标题
+         */
+        name?: string;
+        /**
+         * 摄像头在海康中的编号
+         */
+        indexCode?: string;
+      }[];
+      /**
        * 位置信息
        */
       location?: {
@@ -1371,6 +1533,19 @@ export interface UpdateMeetingResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
+    /**
+     * 视频流
+     */
+    streams?: {
+      /**
+       * 视频流名称
+       */
+      title?: string;
+      /**
+       * 码流
+       */
+      url?: string;
+    }[];
   };
 }
 export interface DeleteMeetingRequest {
@@ -1519,6 +1694,19 @@ export interface CloseMeetingResponse {
        */
       faceDevice?: string;
       /**
+       * 摄像头数组
+       */
+      cameras?: {
+        /**
+         * 摄像头的标题
+         */
+        name?: string;
+        /**
+         * 摄像头在海康中的编号
+         */
+        indexCode?: string;
+      }[];
+      /**
        * 位置信息
        */
       location?: {
@@ -1553,6 +1741,19 @@ export interface CloseMeetingResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
+    /**
+     * 视频流
+     */
+    streams?: {
+      /**
+       * 视频流名称
+       */
+      title?: string;
+      /**
+       * 码流
+       */
+      url?: string;
+    }[];
   };
 }
 export interface AddMemberRequest {
@@ -1695,10 +1896,48 @@ export interface ListDoorsResponse {
     "x-total-count"?: number;
   };
 }
+export interface ListCamerasRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+  };
+}
+export interface ListCamerasResponse {
+  body: {
+    /**
+     * 设备id
+     */
+    cameraIndexCode: string;
+    /**
+     * 通道编号
+     */
+    channelNo?: string;
+    /**
+     * 通道类型
+     */
+    channelType?: string;
+    /**
+     * 名称
+     */
+    cameraName?: string;
+    /**
+     * 类型
+     */
+    cameraType?: string;
+    /**
+     * 所属区域
+     */
+    regionIndexCode?: string;
+  }[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
 export interface ListPersonRequest {
   query?: {
     _limit?: number;
     _offset?: number;
+    orgIndexCodes?: string;
   };
 }
 export interface ListPersonResponse {
@@ -1805,7 +2044,7 @@ export interface Location {
 }
 
 /**
- * Door
+ * Hik Door
  */
 export interface Door {
   /**
@@ -1828,6 +2067,36 @@ export interface Door {
    * 所属区域
    */
   regionName?: string;
+}
+
+/**
+ * Hik Camera
+ */
+export interface Camera {
+  /**
+   * 设备id
+   */
+  cameraIndexCode: string;
+  /**
+   * 通道编号
+   */
+  channelNo?: string;
+  /**
+   * 通道类型
+   */
+  channelType?: string;
+  /**
+   * 名称
+   */
+  cameraName?: string;
+  /**
+   * 类型
+   */
+  cameraType?: string;
+  /**
+   * 所属区域
+   */
+  regionIndexCode?: string;
 }
 
 /**
@@ -1870,6 +2139,19 @@ export interface RoomDoc {
    * 刷脸设备 id
    */
   faceDevice?: string;
+  /**
+   * 摄像头数组
+   */
+  cameras?: {
+    /**
+     * 摄像头的标题
+     */
+    name?: string;
+    /**
+     * 摄像头在海康中的编号
+     */
+    indexCode?: string;
+  }[];
   /**
    * 位置信息
    */
@@ -1934,6 +2216,19 @@ export type RoomCreateDoc = {
    */
   faceDevice?: string;
   /**
+   * 摄像头数组
+   */
+  cameras?: {
+    /**
+     * 摄像头的标题
+     */
+    name?: string;
+    /**
+     * 摄像头在海康中的编号
+     */
+    indexCode?: string;
+  }[];
+  /**
    * 位置信息
    */
   location?: {
@@ -1996,6 +2291,19 @@ export type Room = {
    * 刷脸设备 id
    */
   faceDevice?: string;
+  /**
+   * 摄像头数组
+   */
+  cameras?: {
+    /**
+     * 摄像头的标题
+     */
+    name?: string;
+    /**
+     * 摄像头在海康中的编号
+     */
+    indexCode?: string;
+  }[];
   /**
    * 位置信息
    */
@@ -2245,7 +2553,7 @@ export type MeetingCreateDoc = {
   /**
    * 成员
    */
-  members?: ({
+  members?: {
     /**
      * 头像
      */
@@ -2283,21 +2591,7 @@ export type MeetingCreateDoc = {
        */
       serverIndexCode?: string;
     };
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  } & {
-    /**
-     * 角色
-     */
-    roles: ("ADMIN" | "ARBITER")[];
-  })[];
+  }[];
 };
 
 /**
@@ -2439,6 +2733,19 @@ export type Meeting = {
      */
     faceDevice?: string;
     /**
+     * 摄像头数组
+     */
+    cameras?: {
+      /**
+       * 摄像头的标题
+       */
+      name?: string;
+      /**
+       * 摄像头在海康中的编号
+       */
+      indexCode?: string;
+    }[];
+    /**
      * 位置信息
      */
     location?: {
@@ -2473,6 +2780,19 @@ export type Meeting = {
    * 会议状态
    */
   state: "OPEN" | "CLOSED";
+  /**
+   * 视频流
+   */
+  streams?: {
+    /**
+     * 视频流名称
+     */
+    title?: string;
+    /**
+     * 码流
+     */
+    url?: string;
+  }[];
 };
 
 /**
