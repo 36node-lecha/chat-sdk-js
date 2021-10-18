@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/36node/chat-sdk-js/compare/v0.0.5...v0.0.6) (2021-10-18)
+
+
+### Features
+
+* listcameras ([58abb96](https://github.com/36node/chat-sdk-js/commit/58abb9606696ccee548fce71b08730d68e59232c))
+
 ### [0.0.5](https://github.com/36node/chat-sdk-js/compare/v0.0.4...v0.0.5) (2021-10-06)
 
 ### [0.0.4](https://github.com/36node/chat-sdk-js/compare/v0.0.3...v0.0.4) (2021-10-06)
