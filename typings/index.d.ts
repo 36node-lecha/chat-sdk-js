@@ -10,6 +10,7 @@ declare class SDK {
   door: DoorAPI;
   camera: CameraAPI;
   person: PersonAPI;
+  message: MessageAPI;
 }
 
 export interface Options {
@@ -90,6 +91,12 @@ export interface PersonAPI {
    * List person
    */
   listPerson(req: ListPersonRequest): Promise<ListPersonResponse>;
+}
+export interface MessageAPI {
+  /**
+   * List messages
+   */
+  listMessages(req: ListMessagesRequest): Promise<ListMessagesResponse>;
 }
 
 export interface ListRoomsRequest {
@@ -684,6 +691,18 @@ export interface ListMeetingsResponse {
        */
       user?: string;
       /**
+       * 性别
+       */
+      gender?: "UNKOWN" | "MALE" | "FEMALE" | "OTHER";
+      /**
+       * 警号、工号
+       */
+      worknumber?: string;
+      /**
+       * 所属单位
+       */
+      company?: string;
+      /**
        * 海康资源
        */
       hik?: {
@@ -884,6 +903,18 @@ export interface CreateMeetingRequest {
        */
       user?: string;
       /**
+       * 性别
+       */
+      gender?: "UNKOWN" | "MALE" | "FEMALE" | "OTHER";
+      /**
+       * 警号、工号
+       */
+      worknumber?: string;
+      /**
+       * 所属单位
+       */
+      company?: string;
+      /**
        * 海康资源
        */
       hik?: {
@@ -970,6 +1001,18 @@ export interface CreateMeetingResponse {
        * 用户 id
        */
       user?: string;
+      /**
+       * 性别
+       */
+      gender?: "UNKOWN" | "MALE" | "FEMALE" | "OTHER";
+      /**
+       * 警号、工号
+       */
+      worknumber?: string;
+      /**
+       * 所属单位
+       */
+      company?: string;
       /**
        * 海康资源
        */
@@ -1175,6 +1218,18 @@ export interface GetMeetingResponse {
        * 用户 id
        */
       user?: string;
+      /**
+       * 性别
+       */
+      gender?: "UNKOWN" | "MALE" | "FEMALE" | "OTHER";
+      /**
+       * 警号、工号
+       */
+      worknumber?: string;
+      /**
+       * 所属单位
+       */
+      company?: string;
       /**
        * 海康资源
        */
@@ -1414,6 +1469,18 @@ export interface UpdateMeetingResponse {
        */
       user?: string;
       /**
+       * 性别
+       */
+      gender?: "UNKOWN" | "MALE" | "FEMALE" | "OTHER";
+      /**
+       * 警号、工号
+       */
+      worknumber?: string;
+      /**
+       * 所属单位
+       */
+      company?: string;
+      /**
        * 海康资源
        */
       hik?: {
@@ -1622,6 +1689,18 @@ export interface CloseMeetingResponse {
        */
       user?: string;
       /**
+       * 性别
+       */
+      gender?: "UNKOWN" | "MALE" | "FEMALE" | "OTHER";
+      /**
+       * 警号、工号
+       */
+      worknumber?: string;
+      /**
+       * 所属单位
+       */
+      company?: string;
+      /**
        * 海康资源
        */
       hik?: {
@@ -1783,6 +1862,18 @@ export interface AddMemberRequest {
      */
     user?: string;
     /**
+     * 性别
+     */
+    gender?: "UNKOWN" | "MALE" | "FEMALE" | "OTHER";
+    /**
+     * 警号、工号
+     */
+    worknumber?: string;
+    /**
+     * 所属单位
+     */
+    company?: string;
+    /**
      * 海康资源
      */
     hik?: {
@@ -1826,6 +1917,18 @@ export interface AddMemberResponse {
      * 用户 id
      */
     user?: string;
+    /**
+     * 性别
+     */
+    gender?: "UNKOWN" | "MALE" | "FEMALE" | "OTHER";
+    /**
+     * 警号、工号
+     */
+    worknumber?: string;
+    /**
+     * 所属单位
+     */
+    company?: string;
     /**
      * 海康资源
      */
@@ -2000,6 +2103,70 @@ export interface ListPersonResponse {
       serverIndexCode?: string;
     }[];
   }[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface ListMessagesRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+    type?: string[];
+    topic?: string[];
+  };
+}
+export interface ListMessagesResponse {
+  body: ({
+    /**
+     * 会议id
+     */
+    meeting?: string;
+    /**
+     * 房间id
+     */
+    room?: string;
+    /**
+     * 消息内容
+     */
+    content?: string;
+    /**
+     * 用户id
+     */
+    user?: string;
+    /**
+     * 用户名
+     */
+    username?: string;
+    /**
+     * 类型
+     */
+    type?: string;
+    /**
+     * 资源类型
+     */
+    mime?: string;
+    /**
+     * 资源地址
+     */
+    uri?: string;
+    /**
+     * 消息主题
+     */
+    topic?: string;
+    /**
+     * 类型
+     */
+    at?: Date;
+  } & {
+    /**
+     * mongodb id
+     */
+    id: string;
+    updateAt?: Date;
+    updateBy?: string;
+    createAt?: Date;
+    createBy?: string;
+  })[];
   headers: {
     "x-total-count"?: number;
   };
@@ -2361,6 +2528,18 @@ export interface MemberDoc {
    */
   user?: string;
   /**
+   * 性别
+   */
+  gender?: "UNKOWN" | "MALE" | "FEMALE" | "OTHER";
+  /**
+   * 警号、工号
+   */
+  worknumber?: string;
+  /**
+   * 所属单位
+   */
+  company?: string;
+  /**
    * 海康资源
    */
   hik?: {
@@ -2403,6 +2582,18 @@ export type MemberCreateDoc = {
    * 用户 id
    */
   user?: string;
+  /**
+   * 性别
+   */
+  gender?: "UNKOWN" | "MALE" | "FEMALE" | "OTHER";
+  /**
+   * 警号、工号
+   */
+  worknumber?: string;
+  /**
+   * 所属单位
+   */
+  company?: string;
   /**
    * 海康资源
    */
@@ -2447,6 +2638,18 @@ export type Member = {
    */
   user?: string;
   /**
+   * 性别
+   */
+  gender?: "UNKOWN" | "MALE" | "FEMALE" | "OTHER";
+  /**
+   * 警号、工号
+   */
+  worknumber?: string;
+  /**
+   * 所属单位
+   */
+  company?: string;
+  /**
    * 海康资源
    */
   hik?: {
@@ -2477,6 +2680,107 @@ export type Member = {
    * 角色
    */
   roles: ("ADMIN" | "ARBITER")[];
+};
+
+/**
+ * Message doc
+ */
+export interface MessageDoc {
+  /**
+   * 会议id
+   */
+  meeting?: string;
+  /**
+   * 房间id
+   */
+  room?: string;
+  /**
+   * 消息内容
+   */
+  content?: string;
+  /**
+   * 用户id
+   */
+  user?: string;
+  /**
+   * 用户名
+   */
+  username?: string;
+  /**
+   * 类型
+   */
+  type?: string;
+  /**
+   * 资源类型
+   */
+  mime?: string;
+  /**
+   * 资源地址
+   */
+  uri?: string;
+  /**
+   * 消息主题
+   */
+  topic?: string;
+  /**
+   * 类型
+   */
+  at?: Date;
+}
+
+/**
+ * Message
+ */
+export type Message = {
+  /**
+   * 会议id
+   */
+  meeting?: string;
+  /**
+   * 房间id
+   */
+  room?: string;
+  /**
+   * 消息内容
+   */
+  content?: string;
+  /**
+   * 用户id
+   */
+  user?: string;
+  /**
+   * 用户名
+   */
+  username?: string;
+  /**
+   * 类型
+   */
+  type?: string;
+  /**
+   * 资源类型
+   */
+  mime?: string;
+  /**
+   * 资源地址
+   */
+  uri?: string;
+  /**
+   * 消息主题
+   */
+  topic?: string;
+  /**
+   * 类型
+   */
+  at?: Date;
+} & {
+  /**
+   * mongodb id
+   */
+  id: string;
+  updateAt?: Date;
+  updateBy?: string;
+  createAt?: Date;
+  createBy?: string;
 };
 
 /**
@@ -2575,6 +2879,18 @@ export type MeetingCreateDoc = {
      */
     user?: string;
     /**
+     * 性别
+     */
+    gender?: "UNKOWN" | "MALE" | "FEMALE" | "OTHER";
+    /**
+     * 警号、工号
+     */
+    worknumber?: string;
+    /**
+     * 所属单位
+     */
+    company?: string;
+    /**
      * 海康资源
      */
     hik?: {
@@ -2660,6 +2976,18 @@ export type Meeting = {
      * 用户 id
      */
     user?: string;
+    /**
+     * 性别
+     */
+    gender?: "UNKOWN" | "MALE" | "FEMALE" | "OTHER";
+    /**
+     * 警号、工号
+     */
+    worknumber?: string;
+    /**
+     * 所属单位
+     */
+    company?: string;
     /**
      * 海康资源
      */

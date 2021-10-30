@@ -317,4 +317,24 @@ export default class SDK {
       });
     },
   };
+  /**
+   * message's methods
+   */
+  message = {
+    /**
+     * List messages
+     *
+     * @param {ListMessagesRequest} req listMessages request
+     * @returns {Promise<ListMessagesResponse>} A paged array of messages
+     */
+    listMessages: req => {
+      const { query } = req || {};
+
+      return fetch(`${this.base}/messages`, {
+        method: "GET",
+        query,
+        headers: { Authorization: this.auth },
+      });
+    },
+  };
 }
