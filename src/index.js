@@ -296,6 +296,23 @@ export default class SDK {
         headers: { Authorization: this.auth },
       });
     },
+    /**
+     * get camera and realplay stream
+     *
+     * @param {GetCameraRequest} req getCamera request
+     * @returns {Promise<GetCameraResponse>} The camera detail
+     */
+    getCamera: req => {
+      const { cameraIndexCode } = req || {};
+
+      if (!cameraIndexCode)
+        throw new Error("cameraIndexCode is required for getCamera");
+
+      return fetch(`${this.base}/cameras/${cameraIndexCode}`, {
+        method: "GET",
+        headers: { Authorization: this.auth },
+      });
+    },
   };
   /**
    * person's methods
