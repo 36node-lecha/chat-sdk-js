@@ -85,6 +85,10 @@ export interface CameraAPI {
    * List hik cameras
    */
   listCameras(req: ListCamerasRequest): Promise<ListCamerasResponse>;
+  /**
+   * get camera and realplay stream
+   */
+  getCamera(req: GetCameraRequest): Promise<GetCameraResponse>;
 }
 export interface PersonAPI {
   /**
@@ -2031,9 +2035,51 @@ export interface ListCamerasResponse {
      * 所属区域
      */
     regionIndexCode?: string;
+    /**
+     * 实时视频流（ws协议）
+     */
+    url?: string;
   }[];
   headers: {
     "x-total-count"?: number;
+  };
+}
+export interface GetCameraRequest {
+  cameraIndexCode: string;
+}
+export interface GetCameraResponse {
+  /**
+   * Hik Camera
+   */
+  body: {
+    /**
+     * 设备id
+     */
+    cameraIndexCode: string;
+    /**
+     * 通道编号
+     */
+    channelNo?: string;
+    /**
+     * 通道类型
+     */
+    channelType?: string;
+    /**
+     * 名称
+     */
+    cameraName?: string;
+    /**
+     * 类型
+     */
+    cameraType?: string;
+    /**
+     * 所属区域
+     */
+    regionIndexCode?: string;
+    /**
+     * 实时视频流（ws协议）
+     */
+    url?: string;
   };
 }
 export interface ListPersonRequest {
@@ -2264,6 +2310,10 @@ export interface Camera {
    * 所属区域
    */
   regionIndexCode?: string;
+  /**
+   * 实时视频流（ws协议）
+   */
+  url?: string;
 }
 
 /**
