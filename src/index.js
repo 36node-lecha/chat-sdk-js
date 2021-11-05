@@ -303,13 +303,14 @@ export default class SDK {
      * @returns {Promise<GetCameraResponse>} The camera detail
      */
     getCamera: req => {
-      const { cameraIndexCode } = req || {};
+      const { cameraIndexCode, query } = req || {};
 
       if (!cameraIndexCode)
         throw new Error("cameraIndexCode is required for getCamera");
 
       return fetch(`${this.base}/cameras/${cameraIndexCode}`, {
         method: "GET",
+        query,
         headers: { Authorization: this.auth },
       });
     },

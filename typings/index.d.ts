@@ -2046,6 +2046,12 @@ export interface ListCamerasResponse {
 }
 export interface GetCameraRequest {
   cameraIndexCode: string;
+  query?: {
+    transcode?: number;
+    resolution?: string;
+    bitrate?: number;
+    framerate?: number;
+  };
 }
 export interface GetCameraResponse {
   /**
