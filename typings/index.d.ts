@@ -89,6 +89,12 @@ export interface CameraAPI {
    * get camera and realplay stream
    */
   getCamera(req: GetCameraRequest): Promise<GetCameraResponse>;
+  /**
+   * get camera playback stream
+   */
+  getCameraPlaybackStream(
+    req: GetCameraPlaybackStreamRequest
+  ): Promise<GetCameraPlaybackStreamResponse>;
 }
 export interface PersonAPI {
   /**
@@ -826,19 +832,6 @@ export interface ListMeetingsResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
-    /**
-     * 视频流
-     */
-    streams?: {
-      /**
-       * 视频流名称
-       */
-      title?: string;
-      /**
-       * 码流
-       */
-      url?: string;
-    }[];
   })[];
   headers: {
     "x-total-count"?: number;
@@ -1137,19 +1130,6 @@ export interface CreateMeetingResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
-    /**
-     * 视频流
-     */
-    streams?: {
-      /**
-       * 视频流名称
-       */
-      title?: string;
-      /**
-       * 码流
-       */
-      url?: string;
-    }[];
   };
 }
 export interface GetMeetingRequest {
@@ -1354,19 +1334,6 @@ export interface GetMeetingResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
-    /**
-     * 视频流
-     */
-    streams?: {
-      /**
-       * 视频流名称
-       */
-      title?: string;
-      /**
-       * 码流
-       */
-      url?: string;
-    }[];
   };
 }
 export interface UpdateMeetingRequest {
@@ -1604,19 +1571,6 @@ export interface UpdateMeetingResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
-    /**
-     * 视频流
-     */
-    streams?: {
-      /**
-       * 视频流名称
-       */
-      title?: string;
-      /**
-       * 码流
-       */
-      url?: string;
-    }[];
   };
 }
 export interface DeleteMeetingRequest {
@@ -1824,19 +1778,6 @@ export interface CloseMeetingResponse {
      * 会议状态
      */
     state: "OPEN" | "CLOSED";
-    /**
-     * 视频流
-     */
-    streams?: {
-      /**
-       * 视频流名称
-       */
-      title?: string;
-      /**
-       * 码流
-       */
-      url?: string;
-    }[];
   };
 }
 export interface AddMemberRequest {
@@ -2088,6 +2029,28 @@ export interface GetCameraResponse {
     url?: string;
   };
 }
+export interface GetCameraPlaybackStreamRequest {
+  cameraIndexCode: string;
+  query?: {
+    beginTime: string;
+    endTime: string;
+    transcode?: number;
+    resolution?: string;
+    bitrate?: number;
+    framerate?: number;
+  };
+}
+export interface GetCameraPlaybackStreamResponse {
+  /**
+   * Hik Camera stream
+   */
+  body: {
+    /**
+     * 视频流 url（ws协议）
+     */
+    url?: string;
+  };
+}
 export interface ListPersonRequest {
   query?: {
     _limit?: number;
@@ -2318,6 +2281,16 @@ export interface Camera {
   regionIndexCode?: string;
   /**
    * 实时视频流（ws协议）
+   */
+  url?: string;
+}
+
+/**
+ * Hik Camera stream
+ */
+export interface CameraStream {
+  /**
+   * 视频流 url（ws协议）
    */
   url?: string;
 }
@@ -3164,19 +3137,6 @@ export type Meeting = {
    * 会议状态
    */
   state: "OPEN" | "CLOSED";
-  /**
-   * 视频流
-   */
-  streams?: {
-    /**
-     * 视频流名称
-     */
-    title?: string;
-    /**
-     * 码流
-     */
-    url?: string;
-  }[];
 };
 
 /**

@@ -314,6 +314,27 @@ export default class SDK {
         headers: { Authorization: this.auth },
       });
     },
+    /**
+     * get camera playback stream
+     *
+     * @param {GetCameraPlaybackStreamRequest} req getCameraPlaybackStream request
+     * @returns {Promise<GetCameraPlaybackStreamResponse>} The camera detail
+     */
+    getCameraPlaybackStream: req => {
+      const { cameraIndexCode, query } = req || {};
+
+      if (!cameraIndexCode)
+        throw new Error(
+          "cameraIndexCode is required for getCameraPlaybackStream"
+        );
+      if (!query) throw new Error("query is required for camera");
+
+      return fetch(`${this.base}/cameras/${cameraIndexCode}/playback`, {
+        method: "GET",
+        query,
+        headers: { Authorization: this.auth },
+      });
+    },
   };
   /**
    * person's methods
