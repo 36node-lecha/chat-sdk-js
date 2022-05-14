@@ -7,6 +7,7 @@ declare class SDK {
 
   room: RoomAPI;
   meeting: MeetingAPI;
+  health: HealthAPI;
   door: DoorAPI;
   camera: CameraAPI;
   person: PersonAPI;
@@ -73,6 +74,16 @@ export interface MeetingAPI {
    * Remove a member
    */
   removeMember(req: RemoveMemberRequest): Promise<void>;
+}
+export interface HealthAPI {
+  /**
+   * List health records
+   */
+  listHealthRecords(req: ListHealthRecordsRequest): Promise<ListHealthRecordsResponse>;
+  /**
+   * Create a health record
+   */
+  createHealthRecord(req: CreateHealthRecordRequest): Promise<CreateHealthRecordResponse>;
 }
 export interface DoorAPI {
   /**
@@ -1911,6 +1922,103 @@ export interface RemoveMemberRequest {
   meetingId: string;
   memberId: string;
 }
+export interface ListHealthRecordsRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+    _sort?: string;
+    _select?: string[];
+    at_lt?: string;
+    at_gt?: string;
+  };
+}
+export interface ListHealthRecordsResponse {
+  body: ({
+    /**
+     * 类型
+     */
+    at?: Date;
+    /**
+     * 心率
+     */
+    heartRate?: number;
+    /**
+     * 体温
+     */
+    temperature?: number;
+    /**
+     * 血压 [高压, 低压]
+     */
+    bloodPressure?: number[];
+  } & {
+    /**
+     * mongodb id
+     */
+    id: string;
+    updateAt?: Date;
+    updateBy?: string;
+    createAt?: Date;
+    createBy?: string;
+  })[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface CreateHealthRecordRequest {
+  /**
+   * Health Record Doc
+   */
+  body: {
+    /**
+     * 类型
+     */
+    at?: Date;
+    /**
+     * 心率
+     */
+    heartRate?: number;
+    /**
+     * 体温
+     */
+    temperature?: number;
+    /**
+     * 血压 [高压, 低压]
+     */
+    bloodPressure?: number[];
+  };
+}
+export interface CreateHealthRecordResponse {
+  /**
+   * 历史记录
+   */
+  body: {
+    /**
+     * 类型
+     */
+    at?: Date;
+    /**
+     * 心率
+     */
+    heartRate?: number;
+    /**
+     * 体温
+     */
+    temperature?: number;
+    /**
+     * 血压 [高压, 低压]
+     */
+    bloodPressure?: number[];
+  } & {
+    /**
+     * mongodb id
+     */
+    id: string;
+    updateAt?: Date;
+    updateBy?: string;
+    createAt?: Date;
+    createBy?: string;
+  };
+}
 export interface ListDoorsRequest {
   query?: {
     _limit?: number;
@@ -3201,6 +3309,59 @@ export interface Person {
     serverIndexCode?: string;
   }[];
 }
+
+/**
+ * Health Record Doc
+ */
+export interface HealthRecordDoc {
+  /**
+   * 类型
+   */
+  at?: Date;
+  /**
+   * 心率
+   */
+  heartRate?: number;
+  /**
+   * 体温
+   */
+  temperature?: number;
+  /**
+   * 血压 [高压, 低压]
+   */
+  bloodPressure?: number[];
+}
+
+/**
+ * 历史记录
+ */
+export type HealthRecord = {
+  /**
+   * 类型
+   */
+  at?: Date;
+  /**
+   * 心率
+   */
+  heartRate?: number;
+  /**
+   * 体温
+   */
+  temperature?: number;
+  /**
+   * 血压 [高压, 低压]
+   */
+  bloodPressure?: number[];
+} & {
+  /**
+   * mongodb id
+   */
+  id: string;
+  updateAt?: Date;
+  updateBy?: string;
+  createAt?: Date;
+  createBy?: string;
+};
 
 export interface MongoDefault {
   /**

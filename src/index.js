@@ -258,6 +258,44 @@ export default class SDK {
     },
   };
   /**
+   * health's methods
+   */
+  health = {
+    /**
+     * List health records
+     *
+     * @param {ListHealthRecordsRequest} req listHealthRecords request
+     * @returns {Promise<ListHealthRecordsResponse>} A paged array of health records
+     */
+    listHealthRecords: req => {
+      const { query } = req || {};
+
+      return fetch(`${this.base}/health/records`, {
+        method: "GET",
+        query,
+        headers: { Authorization: this.auth },
+      });
+    },
+    /**
+     * Create a health record
+     *
+     * @param {CreateHealthRecordRequest} req createHealthRecord request
+     * @returns {Promise<CreateHealthRecordResponse>} The health record created
+     */
+    createHealthRecord: req => {
+      const { body } = req || {};
+
+      if (!body)
+        throw new Error("requetBody is required for createHealthRecord");
+
+      return fetch(`${this.base}/health/records`, {
+        method: "POST",
+        body,
+        headers: { Authorization: this.auth },
+      });
+    },
+  };
+  /**
    * door's methods
    */
   door = {
