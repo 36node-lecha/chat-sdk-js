@@ -8,6 +8,7 @@ declare class SDK {
   room: RoomAPI;
   meeting: MeetingAPI;
   health: HealthAPI;
+  tag: TagAPI;
   door: DoorAPI;
   camera: CameraAPI;
   person: PersonAPI;
@@ -84,6 +85,16 @@ export interface HealthAPI {
    * Create a health record
    */
   createHealthRecord(req: CreateHealthRecordRequest): Promise<CreateHealthRecordResponse>;
+}
+export interface TagAPI {
+  /**
+   * List tag records
+   */
+  listTagRecords(req: ListTagRecordsRequest): Promise<ListTagRecordsResponse>;
+  /**
+   * Create a tag record
+   */
+  createTagRecord(req: CreateTagRecordRequest): Promise<CreateTagRecordResponse>;
 }
 export interface DoorAPI {
   /**
@@ -1935,7 +1946,7 @@ export interface ListHealthRecordsRequest {
 export interface ListHealthRecordsResponse {
   body: ({
     /**
-     * 类型
+     * 发生时间
      */
     at?: Date;
     /**
@@ -1970,7 +1981,7 @@ export interface CreateHealthRecordRequest {
    */
   body: {
     /**
-     * 类型
+     * 发生时间
      */
     at?: Date;
     /**
@@ -1993,7 +2004,7 @@ export interface CreateHealthRecordResponse {
    */
   body: {
     /**
-     * 类型
+     * 发生时间
      */
     at?: Date;
     /**
@@ -2008,6 +2019,79 @@ export interface CreateHealthRecordResponse {
      * 血压 [高压, 低压]
      */
     bloodPressure?: number[];
+  } & {
+    /**
+     * mongodb id
+     */
+    id: string;
+    updateAt?: Date;
+    updateBy?: string;
+    createAt?: Date;
+    createBy?: string;
+  };
+}
+export interface ListTagRecordsRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+    _sort?: string;
+    _select?: string[];
+    at_lt?: string;
+    at_gt?: string;
+  };
+}
+export interface ListTagRecordsResponse {
+  body: ({
+    /**
+     * 发生时间
+     */
+    at?: Date;
+    /**
+     * 事件内容
+     */
+    content?: string;
+  } & {
+    /**
+     * mongodb id
+     */
+    id: string;
+    updateAt?: Date;
+    updateBy?: string;
+    createAt?: Date;
+    createBy?: string;
+  })[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface CreateTagRecordRequest {
+  /**
+   * Tag Record Doc
+   */
+  body: {
+    /**
+     * 发生时间
+     */
+    at?: Date;
+    /**
+     * 事件内容
+     */
+    content?: string;
+  };
+}
+export interface CreateTagRecordResponse {
+  /**
+   * 事件记录
+   */
+  body: {
+    /**
+     * 发生时间
+     */
+    at?: Date;
+    /**
+     * 事件内容
+     */
+    content?: string;
   } & {
     /**
      * mongodb id
@@ -3315,7 +3399,7 @@ export interface Person {
  */
 export interface HealthRecordDoc {
   /**
-   * 类型
+   * 发生时间
    */
   at?: Date;
   /**
@@ -3337,7 +3421,7 @@ export interface HealthRecordDoc {
  */
 export type HealthRecord = {
   /**
-   * 类型
+   * 发生时间
    */
   at?: Date;
   /**
@@ -3352,6 +3436,43 @@ export type HealthRecord = {
    * 血压 [高压, 低压]
    */
   bloodPressure?: number[];
+} & {
+  /**
+   * mongodb id
+   */
+  id: string;
+  updateAt?: Date;
+  updateBy?: string;
+  createAt?: Date;
+  createBy?: string;
+};
+
+/**
+ * Tag Record Doc
+ */
+export interface TagRecordDoc {
+  /**
+   * 发生时间
+   */
+  at?: Date;
+  /**
+   * 事件内容
+   */
+  content?: string;
+}
+
+/**
+ * 事件记录
+ */
+export type TagRecord = {
+  /**
+   * 发生时间
+   */
+  at?: Date;
+  /**
+   * 事件内容
+   */
+  content?: string;
 } & {
   /**
    * mongodb id

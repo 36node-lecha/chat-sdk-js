@@ -296,6 +296,43 @@ export default class SDK {
     },
   };
   /**
+   * tag's methods
+   */
+  tag = {
+    /**
+     * List tag records
+     *
+     * @param {ListTagRecordsRequest} req listTagRecords request
+     * @returns {Promise<ListTagRecordsResponse>} A paged array of tag records
+     */
+    listTagRecords: req => {
+      const { query } = req || {};
+
+      return fetch(`${this.base}/tag/records`, {
+        method: "GET",
+        query,
+        headers: { Authorization: this.auth },
+      });
+    },
+    /**
+     * Create a tag record
+     *
+     * @param {CreateTagRecordRequest} req createTagRecord request
+     * @returns {Promise<CreateTagRecordResponse>} The tag record created
+     */
+    createTagRecord: req => {
+      const { body } = req || {};
+
+      if (!body) throw new Error("requetBody is required for createTagRecord");
+
+      return fetch(`${this.base}/tag/records`, {
+        method: "POST",
+        body,
+        headers: { Authorization: this.auth },
+      });
+    },
+  };
+  /**
    * door's methods
    */
   door = {
