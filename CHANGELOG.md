@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.13](https://github.com/36node/chat-sdk-js/compare/v0.0.12...v0.0.13) (2022-05-22)
+
+
+### Features
+
+* tag record ([0847ef5](https://github.com/36node/chat-sdk-js/commit/0847ef5b8698862dd25cf1b67ca2b087562c8983))
+
 ### [0.0.12](https://github.com/36node/chat-sdk-js/compare/v0.0.11...v0.0.12) (2022-05-14)
 
 
