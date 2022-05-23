@@ -8,7 +8,6 @@ declare class SDK {
   room: RoomAPI;
   meeting: MeetingAPI;
   health: HealthAPI;
-  tag: TagAPI;
   door: DoorAPI;
   camera: CameraAPI;
   person: PersonAPI;
@@ -68,6 +67,14 @@ export interface MeetingAPI {
    */
   closeMeeting(req: CloseMeetingRequest): Promise<CloseMeetingResponse>;
   /**
+   * List tag records
+   */
+  listTagRecords(req: ListTagRecordsRequest): Promise<ListTagRecordsResponse>;
+  /**
+   * Create a tag record
+   */
+  createTagRecord(req: CreateTagRecordRequest): Promise<CreateTagRecordResponse>;
+  /**
    * Add a member to a meeting
    */
   addMember(req: AddMemberRequest): Promise<AddMemberResponse>;
@@ -85,16 +92,6 @@ export interface HealthAPI {
    * Create a health record
    */
   createHealthRecord(req: CreateHealthRecordRequest): Promise<CreateHealthRecordResponse>;
-}
-export interface TagAPI {
-  /**
-   * List tag records
-   */
-  listTagRecords(req: ListTagRecordsRequest): Promise<ListTagRecordsResponse>;
-  /**
-   * Create a tag record
-   */
-  createTagRecord(req: CreateTagRecordRequest): Promise<CreateTagRecordResponse>;
 }
 export interface DoorAPI {
   /**
@@ -1802,6 +1799,81 @@ export interface CloseMeetingResponse {
     state: "OPEN" | "CLOSED";
   };
 }
+export interface ListTagRecordsRequest {
+  meetingId: string;
+  query?: {
+    _limit?: number;
+    _offset?: number;
+    _sort?: string;
+    _select?: string[];
+    at_lt?: string;
+    at_gt?: string;
+  };
+}
+export interface ListTagRecordsResponse {
+  body: ({
+    /**
+     * 发生时间
+     */
+    at?: Date;
+    /**
+     * 事件内容
+     */
+    content?: string;
+  } & {
+    /**
+     * mongodb id
+     */
+    id: string;
+    updateAt?: Date;
+    updateBy?: string;
+    createAt?: Date;
+    createBy?: string;
+  })[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface CreateTagRecordRequest {
+  meetingId: string;
+  /**
+   * Tag Record Doc
+   */
+  body: {
+    /**
+     * 发生时间
+     */
+    at?: Date;
+    /**
+     * 事件内容
+     */
+    content?: string;
+  };
+}
+export interface CreateTagRecordResponse {
+  /**
+   * 事件记录
+   */
+  body: {
+    /**
+     * 发生时间
+     */
+    at?: Date;
+    /**
+     * 事件内容
+     */
+    content?: string;
+  } & {
+    /**
+     * mongodb id
+     */
+    id: string;
+    updateAt?: Date;
+    updateBy?: string;
+    createAt?: Date;
+    createBy?: string;
+  };
+}
 export interface AddMemberRequest {
   meetingId: string;
   /**
@@ -2019,79 +2091,6 @@ export interface CreateHealthRecordResponse {
      * 血压 [高压, 低压]
      */
     bloodPressure?: number[];
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  };
-}
-export interface ListTagRecordsRequest {
-  query?: {
-    _limit?: number;
-    _offset?: number;
-    _sort?: string;
-    _select?: string[];
-    at_lt?: string;
-    at_gt?: string;
-  };
-}
-export interface ListTagRecordsResponse {
-  body: ({
-    /**
-     * 发生时间
-     */
-    at?: Date;
-    /**
-     * 事件内容
-     */
-    content?: string;
-  } & {
-    /**
-     * mongodb id
-     */
-    id: string;
-    updateAt?: Date;
-    updateBy?: string;
-    createAt?: Date;
-    createBy?: string;
-  })[];
-  headers: {
-    "x-total-count"?: number;
-  };
-}
-export interface CreateTagRecordRequest {
-  /**
-   * Tag Record Doc
-   */
-  body: {
-    /**
-     * 发生时间
-     */
-    at?: Date;
-    /**
-     * 事件内容
-     */
-    content?: string;
-  };
-}
-export interface CreateTagRecordResponse {
-  /**
-   * 事件记录
-   */
-  body: {
-    /**
-     * 发生时间
-     */
-    at?: Date;
-    /**
-     * 事件内容
-     */
-    content?: string;
   } & {
     /**
      * mongodb id
